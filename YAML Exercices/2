@@ -1,0 +1,39 @@
+- trigger: none
+
+  app:
+    name: "my web app"
+    description: "Exercices to learn YAML"  
+    version: 1.0.0
+
+  environment:
+    development:
+      database:
+      host: "localhost"
+      port: 8000
+      user: "dev_user"
+      password: "dev_password"
+      logging: 
+        level: "debug"
+        file: "/var/log/myapp/dev.log"
+
+    staging:
+      database:
+      host: "staging-db.mywebapp.com"
+      port: 8000
+      name: "staging_db"
+      user: "staging_user"
+      password: "staging_password"
+      logging: 
+        level: "info"
+        file: "/var/log/myapp/staging.log"
+
+    production:
+      database:
+      host: "prod-db.mywebapp.com"
+      port: 8000
+      name: "prod_db"
+      user: "prod_user"
+      password: "prod_password"
+      logging: 
+        level: "error"
+        file: "/var/log/myapp/prod.log"      

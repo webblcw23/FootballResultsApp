@@ -1,0 +1,53 @@
+trigger: none
+
+parameters:
+- name: Environment
+  displayName: 'Environment to deploy'
+  type: string
+  default: 'dev'
+  values:
+  - dev
+  - test
+  - prod
+
+stages:
+- stage: Build
+  displayName: Build stage
+  jobs:
+  - job: BuildJob
+    displayName: 'Build Job'
+    pool:
+        vmImage: 'ubuntu-latest'
+    steps:
+    - task: UseDotNet@2
+      inputs:
+          packageType: 'sdk'
+          version: '3.x'
+          installationPath: $(Agent.ToolsDirectory)/dotnet
+    - script: |
+        dotnet build --configuration Release
+        displayName: 'Build the project'
+
+- stage: Deploy
+  displayName: Deploy stage
+  dependsOn: Build
+  jobs: 
+  - deployment: DeployJob
+    displayName: 'Deploy Job'
+    environment: ${{parameters.Environment}}
+    pool:
+        vmImage: 'ubuntu-latest'
+    strategy:
+        runOnce:
+            deploy:
+              steps:
+              - script: echo "Deploying the application to ${{variables.Environment}}"
+                displayName: 'Deploy Step'
+              - task: AzureWebApp@1
+                inputs:
+                  azureSubscription: 'CoPilotConnect'
+                  appName: '[webappname]-${{parameters.Environment}}'
+                  apptype: 'webApp'
+                  package: $(System.DefaultWorkingDirectory)/**/*.zip
+                  appSettings: '-ASPNETCORE_ENVIRONMENT ${{parameters.Environment}}'
+                  configurationStrings: '-ASPNETCORE_ENVIRONMENT ${{parameters.Environment}}'

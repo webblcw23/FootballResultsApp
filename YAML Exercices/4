@@ -1,0 +1,53 @@
+trigger: none  # No automatic triggers, you will run this manually
+
+parameters:
+- name: Environment
+  displayName: 'Deployment Environment'
+  type: string
+  default: 'dev'
+  values:
+    - dev
+    - test
+    - prod
+
+variables:
+  Environment: ${{ parameters.Environment }}
+
+stages:
+- stage: Build
+  displayName: 'Build Stage'
+  jobs:
+  - job: BuildJob
+    displayName: 'Build Job'
+    pool:
+      vmImage: 'ubuntu-latest'
+    steps:
+    - checkout: self  # Check out the code from the source repository
+    - script: |
+        echo "Preparing the file for deployment"
+        # Copy the file to a staging area or prepare it for deployment
+        mkdir -p $(Build.ArtifactStagingDirectory)/deployment
+        cp path/to/your/file $(Build.ArtifactStagingDirectory)/deployment/
+      displayName: 'Prepare the file'
+
+- stage: Deploy
+  displayName: 'Deploy Stage'
+  dependsOn: Build
+  jobs: 
+  - deployment: DeployJob
+    displayName: 'Deploy Job'
+    environment: ${{ parameters.Environment }}
+    pool:
+      vmImage: 'ubuntu-latest'
+    strategy:
+      runOnce:
+        deploy:
+          steps:
+          - script: echo "Deploying the file to ${{ parameters.Environment }}"
+            displayName: 'Deploy Step'
+          - script: |
+              echo "Moving file to ${{ parameters.Environment }} environment"
+              # Replace with the actual command to move the file
+              # For example, using Azure CLI to upload the file to a storage account or web app
+              az storage blob upload --account-name [storage_account_name] --container-name [container_name] --file $(Build.ArtifactStagingDirectory)/deployment/yourfile --name ${{ parameters.Environment }}/yourfile
+            displayName: 'Move File'

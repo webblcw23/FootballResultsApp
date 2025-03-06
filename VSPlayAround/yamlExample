@@ -1,0 +1,48 @@
+trigger:
+  branches:
+    include:
+      - main
+
+pool:
+  vmImage: 'ubuntu-latest'
+
+variables:
+  azureSubscription: 'YOUR_AZURE_SUBSCRIPTION'
+  appName: 'YOUR_APP_SERVICE_NAME'
+  resourceGroup: 'YOUR_RESOURCE_GROUP'
+  packageDirectory: '$(System.DefaultWorkingDirectory)/drop'
+
+stages:
+  - stage: Build
+    jobs:
+      - job: Build
+        steps:
+          - task: UseDotNet@2
+            inputs:
+              packageType: 'sdk'
+              version: '6.x'
+              installationPath: $(Agent.ToolsDirectory)/dotnet
+
+          - script: |
+              dotnet build
+            displayName: 'Build Application'
+
+          - task: PublishBuildArtifacts@1
+            inputs:
+              PathtoPublish: '$(Build.ArtifactStagingDirectory)'
+              ArtifactName: 'drop'
+              publishLocation: 'Container'
+
+  - stage: Deploy
+    dependsOn: Build
+    jobs:
+      - job: Deploy
+        steps:
+          - download: current
+            artifact: drop
+
+          - task: AzureWebApp@1
+            inputs:
+              azureSubscription: $(azureSubscription)
+              appName: $(appName)
+              package: $(packageDirectory)

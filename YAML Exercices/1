@@ -1,0 +1,17 @@
+- trigger: none
+
+- name: Deploy to Web server
+  hosts: webserver1
+  become: yes
+
+  tasks:
+  - name: Install Nginx
+    apt:
+      name: nginx
+      state: present
+
+  - name: Start Nginx
+    service:
+      name: nginx
+      state: started
+      
