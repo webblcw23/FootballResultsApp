@@ -1,0 +1,7 @@
+subscription_id     = "91c0fe80-4528-4bf2-9796-5d0f2a250518" 
+location            = "westeurope"
+resource_group_name = "my-devops-rg"
+service_plan_name   = "my-service-plan"
+sku_tier            = "Free"
+sku_size            = "F1"
+app_service_name    = "my-web-app"
