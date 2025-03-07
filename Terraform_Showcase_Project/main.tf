@@ -6,8 +6,8 @@ provider "azurerm" {
 
 // create a resource group
 resource "azurerm_resource_group" "rg" {
-  name     = "devops-terraform-rg"
-  location = "westeurope"
+  name     = var.resource_group_name
+  location = var.location
 }
 
 // create an app service plan - free tier
@@ -17,14 +17,14 @@ resource "azurerm_app_service_plan" "app_service_plan" {
   resource_group_name = azurerm_resource_group.rg.name
 
   sku {
-    tier = "Free"
+    tier = var.sku_tier
     size = "F1"
   }
 }
 
 // create an app service - web app
 resource "azurerm_app_service" "app_service" {
-  name                = "devops-web-app"
+  name                = var.app_service_name
   location            = azurerm_resource_group.rg.location
   resource_group_name = azurerm_resource_group.rg.name
   app_service_plan_id = azurerm_app_service_plan.app_service_plan.id
