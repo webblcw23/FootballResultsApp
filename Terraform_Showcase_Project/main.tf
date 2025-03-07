@@ -1,7 +1,7 @@
 // conect to Azure
 provider "azurerm" {
   features {}
-  subscription_id = tfvar.subscription_id
+  subscription_id = var.subscription_id
 }
 
 // create a resource group
