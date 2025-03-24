@@ -1,0 +1,36 @@
+trigger: none
+
+pool:
+  vmImage: 'ubuntu-latest'
+
+steps:
+# Step 1: Build and Push Docker Images
+- task: Docker@2
+  displayName: Build and Push Docker Image for App
+  inputs:
+    containerRegistry: 'Your-Docker-Registry-Service-Connection'
+    repository: 'my-docker-repo/app'
+    dockerfile: 'Dockerfile'
+    command: 'buildAndPush'
+    tags: |
+      latest
+
+- task: Docker@2
+  displayName: Push PostgreSQL Image
+  inputs:
+    containerRegistry: 'Your-Docker-Registry-Service-Connection'
+    repository: 'my-docker-repo/postgres'
+    command: 'push'
+    tags: |
+      latest
+
+# Step 2: Apply Terraform Configuration
+- task: TerraformInstaller@0
+  displayName: Install Terraform
+
+- script: |
+    terraform init
+    terraform plan
+    terraform apply -auto-approve
+  workingDirectory: terraform/
+  displayName: Apply Terraform Configuration

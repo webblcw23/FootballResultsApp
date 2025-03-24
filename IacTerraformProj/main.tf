@@ -26,3 +26,26 @@ resource "docker_container" "my_app" {
   }
   command = ["node", "/app/server.js"]
 }
+
+resource "docker_image" "postgres" {
+  name = "postgres:latest"
+}
+
+resource "docker_container" "postgres_db" {
+  image = docker_image.postgres.name
+  name  = "local-postgres-db"
+  ports {
+    internal = 5432
+    external = 5432
+  }
+  env =[
+    "POSTGRES_USER=admin",
+    "POSTGRES_PASSWORD=password",
+    "POSTGRES_DB=mydb"
+  ]
+  volumes {
+    container_path = "/var/lib/postgresql/data"
+    host_path      = "/Users/lewiswebb/Documents/VSCode_Azure/IacTerraformProj/db_data"
+  }
+}
+

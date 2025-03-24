@@ -1,11 +1,30 @@
 const express = require('express');
+const { Pool } = require('pg');
+
 const app = express();
 const port = 3000;
 
-app.get('/', (req, res) => {
-  res.send('This is a simple Terraform with Docker Project!');
+// Database configuration
+const pool = new Pool({
+  user: 'admin',
+  host: 'localhost',
+  database: 'mydb',
+  password: 'password',
+  port: 5432,
 });
 
-app.listen(port, () => {
-  console.log(`App running at http://localhost:${port}`);
+// Test database connection
+app.get('/db', async (req, res) => {
+  try {
+    const result = await pool.query('SELECT NOW()');
+    res.send(`Database connected: ${result.rows[0].now}`);
+  } catch (error) {
+    res.status(500).send('Database connection error!');
+  }
 });
+
+app.get('/', (req, res) => {
+  res.send('Hello, Node.js with PostgreSQL!');
+});
+
+app.listen(port, () => console.log(`App running on http://localhost:${port}`));
