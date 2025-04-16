@@ -17,13 +17,13 @@ resource "docker_container" "my_app" {
   image = docker_image.my_app.name
   name  = var.container_name
   ports {
-    internal = 3000
-    external = 3000
+    internal = 5001
+    external = 5001
   }
   volumes {
-    container_path = "/app"
-    host_path      = "/Users/lewiswebb/Documents/VSCode_Azure/IacTerraformProj/app"
-  }
+  container_path = "/app"
+  host_path      = abspath("${path.module}/app")
+}
   command = ["node", "/app/server.js"]
 }
 
@@ -45,7 +45,7 @@ resource "docker_container" "postgres_db" {
   ]
   volumes {
     container_path = "/var/lib/postgresql/data"
-    host_path      = "/Users/lewiswebb/Documents/VSCode_Azure/IacTerraformProj/db_data"
+    host_path      = abspath("${path.module}/db_data")
   }
 }
 

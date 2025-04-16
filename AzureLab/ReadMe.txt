@@ -1,0 +1,1 @@
+A mixture of basic IaC files to set up very basic resoruces in Azure Cloud
