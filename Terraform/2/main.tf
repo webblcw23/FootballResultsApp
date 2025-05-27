@@ -156,6 +156,6 @@ resource "azurerm_storage_account" "example" {
 # Create a storage container
 resource "azurerm_storage_container" "example" {
   name                  = "containerforproj2"
-  storage_account_name  = azurerm_storage_account.example.name
+  storage_account_id  = azurerm_storage_account.example.name.id
   container_access_type = "private"
 }
