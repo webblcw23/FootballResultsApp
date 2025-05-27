@@ -1,0 +1,22 @@
+trigger:
+  - main  # Runs on commits to 'main' branch
+
+pool:
+  vmImage: 'ubuntu-latest'  # Use a Linux build agent
+
+steps:
+  - name: Install Terraform
+    run: |
+      curl -fsSL https://apt.releases.hashicorp.com/gpg | sudo apt-key add -
+      sudo apt-add-repository "deb [arch=amd64] https://apt.releases.hashicorp.com $(lsb_release -cs) main"
+      sudo apt-get update && sudo apt-get install terraform
+  
+  - name: Terraform Init
+    run: terraform init
+
+  - name: Terraform Plan
+    run: terraform plan -out=tfplan
+
+  - name: Terraform Apply (Manual Approval Recommended)
+    run: terraform apply -auto-approve
+    condition: and(succeeded(), eq(variables['runTerraformApply'], 'true')) # Optional approval step
