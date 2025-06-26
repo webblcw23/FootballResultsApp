@@ -1,0 +1,1 @@
+dotnet run --project "/Users/lewiswebb/Documents/Testing/macbook/DevOps/MiniCICDTestApp/MiniCICDTestApp.csproj"
