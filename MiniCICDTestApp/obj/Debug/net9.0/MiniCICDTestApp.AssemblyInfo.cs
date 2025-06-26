@@ -13,7 +13,7 @@ using System.Reflection;
 [assembly: System.Reflection.AssemblyCompanyAttribute("MiniCICDTestApp")]
 [assembly: System.Reflection.AssemblyConfigurationAttribute("Debug")]
 [assembly: System.Reflection.AssemblyFileVersionAttribute("1.0.0.0")]
-[assembly: System.Reflection.AssemblyInformationalVersionAttribute("1.0.0+152141f0fddb94ed23160072c8ef511479d7706f")]
+[assembly: System.Reflection.AssemblyInformationalVersionAttribute("1.0.0+1cb6734bce5f67e3b65fdd2885e8a3b4ee012401")]
 [assembly: System.Reflection.AssemblyProductAttribute("MiniCICDTestApp")]
 [assembly: System.Reflection.AssemblyTitleAttribute("MiniCICDTestApp")]
 [assembly: System.Reflection.AssemblyVersionAttribute("1.0.0.0")]
