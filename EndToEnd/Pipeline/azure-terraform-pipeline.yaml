@@ -1,0 +1,43 @@
+trigger:
+  branches:
+    include:
+      - main
+
+pool:
+  vmImage: ubuntu-latest
+
+  variables:
+    terraformVersion: "1.7.5" # Specify the Terraform version to use
+
+# Check if Terraform is installed, if not, install it. If installed, skip the installation.
+
+steps:
+  - script: |
+      if ! command -v terraform &> /dev/null; then
+        echo "Terraform not found. Installing..."
+        curl -sLo terraform.zip https://releases.hashicorp.com/terraform/$terraformVersion/terraform_1.7.5_linux_amd64.zip
+        unzip terraform.zip
+        sudo mv terraform /usr/local/bin/
+      else
+        echo "Terraform is already installed. Skipping installation."
+      fi
+      terraform -version
+    displayName: "Check and Install Terraform if Needed"
+
+    # Run Terraform commands to initialize, validate, and plan the infrastructure.
+    # Skipping the apply step to avoid making changes to the infrastructure during CI.
+
+  - script: |
+      terraform init
+        terraform validate
+        terraform plan -out=tfplan
+      # terraform apply -auto-approve tfplan
+    workingDirectory: infrastructure
+    displayName: "Terraform Init, Validate, Plan"
+
+  - task: PublishPipelineArtifact@1
+    inputs:
+      targetPath: infrastructure/tfplan
+      artifactName: terraform-plan
+      publishLocation: pipeline
+    displayName: "Publish Terraform Plan Artifact"
