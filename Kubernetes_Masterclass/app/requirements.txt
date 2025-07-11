@@ -1,0 +1,2 @@
+# requirements.txt for Flask application
+flask
