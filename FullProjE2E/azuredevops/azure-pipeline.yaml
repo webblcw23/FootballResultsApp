@@ -10,8 +10,8 @@ variables:
   kubernetesNamespace: 'default' # Or your specific namespace if you created one
 
   # Azure DevOps Service Connections
-  azureSubscription: 'AZSubNmae' # e.g., 'AzureSubscriptionConnection'
-  acrServiceConnection: 'ACRServiceConnection' # e.g., 'ACRConnection'
+  azureSubscription: 'AZSubNmae' # Name of the Azure subscription service connection
+  acrServiceConnection: 'ACRServiceConnection' # Name of the service connection to Azure Container Registry (ACR)
 
   # Azure Resource Names 
   resourceGroupName: 'rg-thefullproj' 
