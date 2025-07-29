@@ -1,0 +1,170 @@
+
+trigger:
+- main # Triggers the pipeline on pushes to the 'main' branch
+
+variables:
+  # General variables
+  vmImageName: 'ubuntu-latest'
+  appName: 'full-proj-app'
+  appPort: 8000 # The port your Flask app listens on inside the container
+  kubernetesNamespace: 'default' # Or your specific namespace if you created one
+
+  # Azure DevOps Service Connections
+  azureSubscription: 'AZSubNmae' # e.g., 'AzureSubscriptionConnection'
+  acrServiceConnection: 'ACRServiceConnection' # e.g., 'ACRConnection'
+
+  # Azure Resource Names 
+  resourceGroupName: 'rg-thefullproj' 
+  aksClusterName: 'aks-thefullproj'
+  acrLoginServer: 'thefullprojacr.azurecr.io' 
+
+stages:
+- stage: BuildAndPushImage
+  displayName: 'Build and Push Docker Image'
+  jobs:
+  - job: Build
+    displayName: 'Build Job'
+    pool:
+      vmImage: $(vmImageName)
+    steps:
+    - task: Docker@2
+      displayName: 'Build and Push Image to ACR'
+      inputs:
+        containerRegistry: $(acrServiceConnection)
+        repository: $(appName) # Name of the repository in ACR
+        command: 'buildAndPush'
+        Dockerfile: 'app/Dockerfile' # Path to your Dockerfile
+        tags: |
+          $(Build.BuildId) # Tag with unique build ID
+          latest # Also tag as latest
+        buildContext: 'app' # Context for the Docker build (where Dockerfile and app code are)
+
+- stage: DeployInfrastructure
+  displayName: 'Deploy or Update Azure Infrastructure (Terraform)'
+  jobs:
+  - job: TerraformApply
+    displayName: 'Terraform Apply Job'
+    pool:
+      vmImage: $(vmImageName)
+    steps:
+    - checkout: self # Checkout the repository
+      persistCredentials: true
+
+    - task: AzureCLI@2 # Install Azure CLI for authentication if needed for Terraform backend
+      displayName: 'Install Azure CLI'
+      inputs:
+        azureSubscription: $(azureSubscription)
+        scriptType: 'bash'
+        scriptLocation: 'inlineScript'
+        inlineScript: |
+          az account show # Verify connection
+
+    - task: TerraformInstaller@0
+      displayName: 'Install Terraform CLI'
+      inputs:
+        terraformVersion: 'latest' # Ensure latest compatible version
+
+    - task: TerraformTaskV4@4 # Using version 4 which supports init/plan/apply
+      displayName: 'Terraform Init'
+      inputs:
+        provider: 'azurerm'
+        command: 'init'
+        backendServiceArm: $(azureSubscription)
+        backendAzureRmResourceGroupName: $(resourceGroupName)
+        backendAzureRmContainerName: 'tfstate' # Create a storage container named 'tfstate' in a storage account
+        backendAzureRmKey: 'thefullproj.tfstate'
+        workingDirectory: 'infra/terraform' # Path to your Terraform files
+
+    - task: TerraformTaskV4@4
+      displayName: 'Terraform Plan'
+      inputs:
+        provider: 'azurerm'
+        command: 'plan'
+        backendServiceArm: $(azureSubscription)
+        backendAzureRmResourceGroupName: $(resourceGroupName)
+        backendAzureRmContainerName: 'tfstate'
+        backendAzureRmKey: 'thefullproj.tfstate'
+        workingDirectory: 'infra/terraform'
+        environmentServiceNameAzureRM: $(azureSubscription)
+        # Optional: publishPlanResult: 'true'
+
+    - task: TerraformTaskV4@4
+      displayName: 'Terraform Apply'
+      inputs:
+        provider: 'azurerm'
+        command: 'apply'
+        backendServiceArm: $(azureSubscription)
+        backendAzureRmResourceGroupName: $(resourceGroupName)
+        backendAzureRmContainerName: 'tfstate'
+        backendAzureRmKey: 'thefullproj.tfstate'
+        workingDirectory: 'infra/terraform'
+        environmentServiceNameAzureRM: $(azureSubscription)
+        # Note: If you want to automate approval, set autoApprove: true.
+        # For a demo, it's fine, but in prod, usually requires manual approval step.
+        autoApprove: true
+
+- stage: DeployToAKS
+  displayName: 'Deploy Application to AKS'
+  jobs:
+  - job: Deploy
+    displayName: 'Deploy Job'
+    pool:
+      vmImage: $(vmImageName)
+    steps:
+    - checkout: self # Checkout the repository
+
+    - task: KubernetesInstaller@0 # Install kubectl
+      displayName: 'Install kubectl'
+      inputs:
+        kubernetesVersion: '1.27.3' # Match your AKS cluster version or use 'latest'
+
+    - task: AzureCLI@2 # Get AKS credentials
+      displayName: 'Get AKS Credentials'
+      inputs:
+        azureSubscription: $(azureSubscription)
+        scriptType: 'bash'
+        scriptLocation: 'inlineScript'
+        inlineScript: |
+          az aks get-credentials --resource-group $(resourceGroupName) --name $(aksClusterName) --overwrite-existing --admin
+          # The --admin flag uses cluster admin credentials. For production, consider using a non-admin role.
+
+    # Option 1: Create Image Pull Secret (if not using Workload Identity or AKS managed identity for ACR pull)
+    # This task gets ACR admin credentials and creates a K8s secret for image pull.
+    - task: AzureCLI@2
+      displayName: 'Create Kubernetes Image Pull Secret'
+      inputs:
+        azureSubscription: $(azureSubscription)
+        scriptType: 'bash'
+        scriptLocation: 'inlineScript'
+        inlineScript: |
+          ACR_USERNAME=$(az acr credential show --name $(acrLoginServer) --query "username" -o tsv)
+          ACR_PASSWORD=$(az acr credential show --name $(acrLoginServer) --query "passwords[0].value" -o tsv)
+          kubectl create secret docker-registry acr-secret \
+            --docker-server=$(acrLoginServer) \
+            --docker-username=$ACR_USERNAME \
+            --docker-password=$ACR_PASSWORD \
+            --namespace=$(kubernetesNamespace) \
+            --dry-run=client -o yaml | kubectl apply -f -
+          echo "Kubernetes image pull secret 'acr-secret' created/updated."
+      condition: succeeded()
+
+    - task: KubernetesManifest@1 # Deploy application to AKS
+      displayName: 'Deploy application to AKS'
+      inputs:
+        action: 'deploy'
+        kubernetesServiceConnection: '' # No service connection needed if using kubectl CLI directly
+        namespace: $(kubernetesNamespace)
+        manifests: |
+          k8s/deployment.yaml
+          k8s/service.yaml
+        # Use a `substitute` step here if you need to replace variables in your K8s manifests
+        # For example, to inject the build ID into the image tag:
+        # containers:
+        # - name: flask-app-container
+        #   image: $(acrLoginServer)/$(appName):$(Build.BuildId)
+        # You would update k8s/deployment.yaml with the $(acrLoginServer) and $(appName):$(Build.BuildId) placeholders
+        # and ensure enableSubstitution: true is set on this task.
+        # Or, just use 'latest' tag as configured in Phase 3 for simplicity.
+        # Here, we're assuming the image tag in deployment.yaml is `full-proj-app:latest` and matches the `latest` tag push.
+        # If you use $(Build.BuildId) tag in deployment.yaml, then set enableSubstitution: true below.
+        enableSubstitution: false # Set to true if you're using $(variables) in your K8s YAMLs and want substitution.

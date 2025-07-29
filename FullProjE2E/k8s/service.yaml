@@ -1,0 +1,16 @@
+# k8s/service.yaml
+
+apiVersion: v1 # API version for Service
+kind: Service
+metadata:
+  name: full-proj-app-service # Name of your service
+  labels:
+    app: full-proj-app
+spec:
+  selector:
+    app: full-proj-app # Selects pods with this label (i.e., your deployment)
+  ports:
+  - protocol: TCP
+    port: 80 # The port clients will connect to on the LoadBalancer
+    targetPort: 8000 # The port your Flask app listens on inside the container
+  type: LoadBalancer # This type creates an Azure Load Balancer with a public IP
