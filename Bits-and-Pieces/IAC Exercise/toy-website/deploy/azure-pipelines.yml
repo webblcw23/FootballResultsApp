@@ -1,0 +1,31 @@
+trigger: 
+  batch: true 
+  branches: 
+    include:
+    - main
+
+pool:
+  vmImage: ubuntu-latest
+
+variables:
+  - name: deploymentDefaultLocation
+    value: ukwest 
+
+jobs:
+- job:
+  steps:
+    #Build pipe excerise
+  #- script: echo Hello world!
+  #  displayName: 'Placeholder step'
+  
+    #ARM template exercise
+  - task: AzureResourceManagerTemplateDeployment@3
+    inputs:
+      connectedServiceName: $(ServiceConnectionName)
+      deploymentName: $(Build.BuildNumber)
+      location: $(deploymentDefaultLocation)
+      resourceGroupName: $(ResourceGroupName)
+      csmFile: deploy/main.bicep
+      overrideParameters: >
+       -environmentType $(EnvironmentType)
+       -deployToyManualsStorageAccount $(DeployToyManualsStorageAccount)
