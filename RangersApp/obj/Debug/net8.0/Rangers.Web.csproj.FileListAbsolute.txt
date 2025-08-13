@@ -31,3 +31,9 @@
 /Users/lewiswebb/Documents/VSCode_Azure/RangersApp/bin/Debug/net8.0/NodaTime.dll
 /Users/lewiswebb/Documents/VSCode_Azure/RangersApp/obj/Debug/net8.0/Rangers..F95BF32D.Up2Date
 /Users/lewiswebb/Documents/VSCode_Azure/RangersApp/bin/Debug/net8.0/HtmlAgilityPack.dll
+/Users/lewiswebb/Documents/VSCode_Azure/RangersApp/bin/Debug/net8.0/out/web.config
+/Users/lewiswebb/Documents/VSCode_Azure/RangersApp/bin/Debug/net8.0/Data/rangers-results.json
+/Users/lewiswebb/Documents/VSCode_Azure/RangersApp/bin/Debug/net8.0/out/Data/rangers-fixtures.json
+/Users/lewiswebb/Documents/VSCode_Azure/RangersApp/bin/Debug/net8.0/out/Rangers.Web.deps.json
+/Users/lewiswebb/Documents/VSCode_Azure/RangersApp/bin/Debug/net8.0/out/Rangers.Web.runtimeconfig.json
+/Users/lewiswebb/Documents/VSCode_Azure/RangersApp/bin/Debug/net8.0/out/Rangers.Web.staticwebassets.endpoints.json

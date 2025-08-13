@@ -1,0 +1,9 @@
+/Users/lewiswebb/Documents/VSCode_Azure/RangersApp/out/Rangers.Web
+/Users/lewiswebb/Documents/VSCode_Azure/RangersApp/out/Data/rangers-fixtures.json
+/Users/lewiswebb/Documents/VSCode_Azure/RangersApp/out/Rangers.Web.dll
+/Users/lewiswebb/Documents/VSCode_Azure/RangersApp/out/Rangers.Web.deps.json
+/Users/lewiswebb/Documents/VSCode_Azure/RangersApp/out/Rangers.Web.runtimeconfig.json
+/Users/lewiswebb/Documents/VSCode_Azure/RangersApp/out/Rangers.Web.pdb
+/Users/lewiswebb/Documents/VSCode_Azure/RangersApp/out/HtmlAgilityPack.dll
+/Users/lewiswebb/Documents/VSCode_Azure/RangersApp/out/Ical.Net.dll
+/Users/lewiswebb/Documents/VSCode_Azure/RangersApp/out/NodaTime.dll
