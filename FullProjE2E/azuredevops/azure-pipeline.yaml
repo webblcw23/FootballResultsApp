@@ -99,8 +99,6 @@ stages:
         backendAzureRmKey: 'thefullproj.tfstate'
         workingDirectory: 'infra/terraform'
         environmentServiceNameAzureRM: $(azureSubscription)
-        # Note: If you want to automate approval, set autoApprove: true.
-        # For a demo, it's fine, but in prod, usually requires manual approval step.
         autoApprove: true
 
 - stage: DeployToAKS
@@ -157,14 +155,3 @@ stages:
         manifests: |
           k8s/deployment.yaml
           k8s/service.yaml
-        # Use a `substitute` step here if you need to replace variables in your K8s manifests
-        # For example, to inject the build ID into the image tag:
-        # containers:
-        # - name: flask-app-container
-        #   image: $(acrLoginServer)/$(appName):$(Build.BuildId)
-        # You would update k8s/deployment.yaml with the $(acrLoginServer) and $(appName):$(Build.BuildId) placeholders
-        # and ensure enableSubstitution: true is set on this task.
-        # Or, just use 'latest' tag as configured in Phase 3 for simplicity.
-        # Here, we're assuming the image tag in deployment.yaml is `full-proj-app:latest` and matches the `latest` tag push.
-        # If you use $(Build.BuildId) tag in deployment.yaml, then set enableSubstitution: true below.
-        enableSubstitution: false # Set to true if you're using $(variables) in your K8s YAMLs and want substitution.

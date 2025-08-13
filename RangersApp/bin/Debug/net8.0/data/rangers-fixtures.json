@@ -1,0 +1,27 @@
+{
+  "name": "Rangers Fixtures 2025/26",
+  "matches": [
+    { "date": "2025-08-16", "team1": "Rangers", "team2": "Alloa", "competition": "Premier Sports Cup", "venue": "Ibrox", "score": null },
+    { "date": "2025-08-19", "team1": "Rangers", "team2": "Club Brugge", "competition": "UEFA Champions League", "venue": "Ibrox", "score": null },
+    { "date": "2025-08-24", "team1": "St. Mirren", "team2": "Rangers", "competition": "Premiership", "venue": "St. Mirren Park", "score": null },
+    { "date": "2025-08-27", "team1": "Club Brugge", "team2": "Rangers", "competition": "UEFA Champions League", "venue": "Jan Breydel Stadium", "score": null },
+    { "date": "2025-08-31", "team1": "Rangers", "team2": "Celtic", "competition": "Premiership", "venue": "Ibrox", "score": null },
+    { "date": "2025-09-13", "team1": "Rangers", "team2": "Hearts", "competition": "Premiership", "venue": "Ibrox", "score": null },
+    { "date": "2025-09-27", "team1": "Livingston", "team2": "Rangers", "competition": "Premiership", "venue": "Tony Macaroni Arena", "score": null },
+    { "date": "2025-10-04", "team1": "Falkirk", "team2": "Rangers", "competition": "Premiership", "venue": "Falkirk Stadium", "score": null },
+    { "date": "2025-10-18", "team1": "Rangers", "team2": "Dundee United", "competition": "Premiership", "venue": "Ibrox", "score": null },
+    { "date": "2025-10-25", "team1": "Rangers", "team2": "Kilmarnock", "competition": "Premiership", "venue": "Ibrox", "score": null },
+    { "date": "2025-10-29", "team1": "Hibernian", "team2": "Rangers", "competition": "Premiership", "venue": "Easter Road", "score": null },
+    { "date": "2025-11-01", "team1": "Rangers", "team2": "Aberdeen", "competition": "Premiership", "venue": "Ibrox", "score": null },
+    { "date": "2025-11-08", "team1": "Dundee", "team2": "Rangers", "competition": "Premiership", "venue": "Dens Park", "score": null },
+    { "date": "2025-11-22", "team1": "Rangers", "team2": "Livingston", "competition": "Premiership", "venue": "Ibrox", "score": null },
+    { "date": "2025-11-29", "team1": "Rangers", "team2": "Falkirk", "competition": "Premiership", "venue": "Ibrox", "score": null },
+    { "date": "2025-12-03", "team1": "Dundee United", "team2": "Rangers", "competition": "Premiership", "venue": "Tannadice", "score": null },
+    { "date": "2025-12-06", "team1": "Kilmarnock", "team2": "Rangers", "competition": "Premiership", "venue": "Rugby Park", "score": null },
+    { "date": "2025-12-13", "team1": "Rangers", "team2": "Hibernian", "competition": "Premiership", "venue": "Ibrox", "score": null },
+    { "date": "2025-12-20", "team1": "Hearts", "team2": "Rangers", "competition": "Premiership", "venue": "Tynecastle", "score": null },
+    { "date": "2025-12-27", "team1": "Rangers", "team2": "Motherwell", "competition": "Premiership", "venue": "Ibrox", "score": null },
+    { "date": "2025-12-30", "team1": "Rangers", "team2": "St. Mirren", "competition": "Premiership", "venue": "Ibrox", "score": null },
+    { "date": "2026-01-03", "team1": "Celtic", "team2": "Rangers", "competition": "Premiership", "venue": "Celtic Park", "score": null }
+  ]
+}
