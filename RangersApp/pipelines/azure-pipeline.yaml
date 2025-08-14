@@ -12,10 +12,25 @@ variables:
   DOCKER_IMAGE: '$(ACR_NAME).azurecr.io/$(IMAGE_NAME):latest'
 
 steps:
-- task: UseDotNet@2
+- task: DotNetCoreCLI@2
+  displayName: 'Restore RangersApp'
   inputs:
-    packageType: 'sdk'
-    version: '9.0.x'
+    command: 'restore'
+    projects: 'RangersApp/RangersApp.csproj'
+
+- task: DotNetCoreCLI@2
+  displayName: 'Build RangersApp'
+  inputs:
+    command: 'build'
+    projects: 'RangersApp/RangersApp.csproj'
+    arguments: '--configuration Release'
+
+- task: DotNetCoreCLI@2
+  displayName: 'Test RangersApp'
+  inputs:
+    command: 'test'
+    projects: 'RangersApp/RangersApp.csproj'
+
 
 - script: |
     dotnet build
