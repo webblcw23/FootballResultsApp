@@ -7,7 +7,7 @@ pool:
   vmImage: 'ubuntu-latest'
 
 variables:
-  ACR_NAME: 'rangersacr'
+  ACR_NAME: 'rangers-acr-docker'
   IMAGE_NAME: 'rangersapp'
   DOCKER_IMAGE: '$(ACR_NAME).azurecr.io/$(IMAGE_NAME):latest'
 
@@ -24,7 +24,7 @@ steps:
 
 - task: Docker@2
   inputs:
-    containerRegistry: 'rangers-acr-service-connection'  # My custom set service connection name
+    containerRegistry: 'rangers-acr-docker'  # My custom set service connection name
     repository: '$(IMAGE_NAME)'
     command: 'buildAndPush'
     tags: |
