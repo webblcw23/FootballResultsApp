@@ -40,7 +40,14 @@ steps:
     tags: |
       latest
 
+- task: TerraformInstaller@1
+  displayName: 'Install Terraform'
+  inputs:
+    terraformVersion: '1.7.5'  # or whatever version you prefer
+
+
 - script: |
+    workingDirectory: '$(Build.SourcesDirectory)/terraform'
     terraform init
     terraform plan -out=tfplan.out
   displayName: 'Terraform Init and Plan'
