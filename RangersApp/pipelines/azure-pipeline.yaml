@@ -16,20 +16,20 @@ steps:
   displayName: 'Restore RangersApp'
   inputs:
     command: 'restore'
-    projects: 'RangersApp/RangersApp.csproj'
+    projects: 'RangersApp/Rangers.Web.csproj'
 
 - task: DotNetCoreCLI@2
   displayName: 'Build RangersApp'
   inputs:
     command: 'build'
-    projects: 'RangersApp/RangersApp.csproj'
+    projects: 'RangersApp/Rangers.Web.csproj'
     arguments: '--configuration Release'
 
 - task: DotNetCoreCLI@2
   displayName: 'Test RangersApp'
   inputs:
     command: 'test'
-    projects: 'RangersApp/RangersApp.csproj'
+    projects: 'RangersApp/Rangers.Web.csproj'
 
 
 - script: |
