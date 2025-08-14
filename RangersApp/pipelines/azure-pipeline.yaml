@@ -45,6 +45,19 @@ steps:
   inputs:
     terraformVersion: '1.7.5'  # or whatever version you prefer
 
+- task: AzureCLI@2
+  displayName: 'Set Terraform Azure Credentials'
+  inputs:
+    azureSubscription: 'rangers-acr-service-connection'
+    scriptType: 'bash'
+    scriptLocation: 'inlineScript'
+    inlineScript: |
+      echo "##vso[task.setvariable variable=ARM_CLIENT_ID]$servicePrincipalId"
+      echo "##vso[task.setvariable variable=ARM_CLIENT_SECRET]$servicePrincipalKey"
+      echo "##vso[task.setvariable variable=ARM_SUBSCRIPTION_ID]$subscriptionId"
+      echo "##vso[task.setvariable variable=ARM_TENANT_ID]$tenantId"
+
+
 
 - script: |
     terraform init
