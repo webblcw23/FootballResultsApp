@@ -47,7 +47,7 @@ steps:
     terraformVersion: '1.7.5'  # or whatever version you prefer
 
 - task: AzureCLI@2
-  displayName: 'Set Terraform Auth Env Vars'
+  displayName: 'Inject Terraform Auth Env Vars'
   inputs:
     azureSubscription: 'rangers-acr-service-connection'
     scriptType: 'bash'
@@ -57,6 +57,18 @@ steps:
       echo "##vso[task.setvariable variable=ARM_CLIENT_SECRET]$servicePrincipalKey"
       echo "##vso[task.setvariable variable=ARM_SUBSCRIPTION_ID]$subscriptionId"
       echo "##vso[task.setvariable variable=ARM_TENANT_ID]$tenantId"
+
+- script: |
+    echo "Client ID: $ARM_CLIENT_ID"
+    echo "Tenant ID: $ARM_TENANT_ID"
+  displayName: 'Debug Env Vars'
+
+
+- script: |
+    echo "ARM CLIENT ID: $ARM_CLIENT_ID"
+    echo "ARM CLIENT SECRET: $ARM_CLIENT_SECRET"
+    echo "ARM SUBSCRIPION: $ARM_SUBSCRIPTION_ID"
+    echo "ARM TENANT ID: $ARM_TENANT_ID"
 
 
 - script: |
