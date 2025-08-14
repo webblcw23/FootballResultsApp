@@ -47,10 +47,10 @@ steps:
 
 
 - script: |
-    workingDirectory: '$(Build.SourcesDirectory)/terraform'
     terraform init
     terraform plan -out=tfplan.out
   displayName: 'Terraform Init and Plan'
+  workingDirectory: '$(Build.SourcesDirectory)/terraform'
 
 - publish: tfplan.out
   artifact: terraform-plan
