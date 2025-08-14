@@ -38,21 +38,21 @@ steps:
 - publish: tfplan.out
   artifact: terraform-plan
 
-- stage: TerraformApply
-  dependsOn: TerraformPlan
-  jobs:
-    - job: Apply
-      pool:
-        vmImage: 'ubuntu-latest'
-      steps:
-        - checkout: self
+# - stage: TerraformApply
+#  dependsOn: TerraformPlan
+#  jobs:
+#    - job: Apply
+#      pool:
+#        vmImage: 'ubuntu-latest'
+#      steps:
+#        - checkout: self
 
-        - task: AzureCLI@2
-          inputs:
-            azureSubscription: 'rangers-acr-service-connection' # My custom set service connection name
-            scriptType: 'bash'
-            scriptLocation: 'inlineScript'
-            inlineScript: |
-              cd terraform
-              terraform init
-              terraform apply -auto-approve tfplan.out
+#        - task: AzureCLI@2
+#          inputs:
+#            azureSubscription: 'rangers-acr-service-connection' # My custom set service connection name
+#            scriptType: 'bash'
+#            scriptLocation: 'inlineScript'
+#            inlineScript: |
+#              cd terraform
+#              terraform init
+#              terraform apply -auto-approve tfplan.out
