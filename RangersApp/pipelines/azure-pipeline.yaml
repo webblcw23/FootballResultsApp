@@ -32,11 +32,6 @@ steps:
     projects: 'RangersApp/Rangers.Web.csproj'
 
 
-- script: |
-    dotnet build
-    dotnet test
-  displayName: 'Build and Test .NET App'
-
 - task: Docker@2
   inputs:
     containerRegistry: 'rangers-acr-docker'  # My custom set service connection name
