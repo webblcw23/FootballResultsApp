@@ -50,7 +50,7 @@ steps:
     terraform init
     terraform plan -out=tfplan.out
   displayName: 'Terraform Init and Plan'
-  workingDirectory: '$(Build.SourcesDirectory)/terraform'
+  workingDirectory: 'RangersApp/terraform'
 
 - publish: tfplan.out
   artifact: terraform-plan
