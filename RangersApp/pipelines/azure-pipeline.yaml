@@ -1,0 +1,58 @@
+trigger:
+  branches:
+    include:
+      - main
+
+pool:
+  vmImage: 'ubuntu-latest'
+
+variables:
+  ACR_NAME: 'rangersacr'
+  IMAGE_NAME: 'rangersapp'
+  DOCKER_IMAGE: '$(ACR_NAME).azurecr.io/$(IMAGE_NAME):latest'
+
+steps:
+- task: UseDotNet@2
+  inputs:
+    packageType: 'sdk'
+    version: '8.0.x'
+
+- script: |
+    dotnet build
+    dotnet test
+  displayName: 'Build and Test .NET App'
+
+- task: Docker@2
+  inputs:
+    containerRegistry: 'rangers-acr-service-connection'  # My custom set service connection name
+    repository: '$(IMAGE_NAME)'
+    command: 'buildAndPush'
+    tags: |
+      latest
+
+- script: |
+    terraform init
+    terraform plan -out=tfplan.out
+  displayName: 'Terraform Init and Plan'
+
+- publish: tfplan.out
+  artifact: terraform-plan
+
+- stage: TerraformApply
+  dependsOn: TerraformPlan
+  jobs:
+    - job: Apply
+      pool:
+        vmImage: 'ubuntu-latest'
+      steps:
+        - checkout: self
+
+        - task: AzureCLI@2
+          inputs:
+            azureSubscription: 'rangers-acr-service-connection' # My custom set service connection name
+            scriptType: 'bash'
+            scriptLocation: 'inlineScript'
+            inlineScript: |
+              cd terraform
+              terraform init
+              terraform apply -auto-approve tfplan.out
