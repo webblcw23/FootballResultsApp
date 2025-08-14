@@ -63,14 +63,6 @@ steps:
     echo "Tenant ID: $ARM_TENANT_ID"
   displayName: 'Debug Env Vars'
 
-
-- script: |
-    echo "ARM CLIENT ID: $ARM_CLIENT_ID"
-    echo "ARM CLIENT SECRET: $ARM_CLIENT_SECRET"
-    echo "ARM SUBSCRIPION: $ARM_SUBSCRIPTION_ID"
-    echo "ARM TENANT ID: $ARM_TENANT_ID"
-
-
 - script: |
     terraform init
     terraform plan \
@@ -90,7 +82,7 @@ steps:
 - publish: tfplan.out
   artifact: terraform-plan
 
-- script: 
+
 - task: PowerShell@2
   inputs:
     targetType: 'inline'
