@@ -3,7 +3,8 @@
 # Provider Configuration
 provider "azurerm" {
   features {}
-  subscription_id = "91c0fe80-4528-4bf2-9796-5d0f2a250518"
+  subscription_id = var.subscription_id
+    tenant_id       = var.tenant_id
 }
 
 # Resource Group

@@ -47,9 +47,11 @@ variable "client_secret" {
 variable "subscription_id" {
   description = "Azure subscription ID"
   type        = string
+    default     = "91c0fe80-4528-4bf2-9796-5d0f2a250518"
 }
 
 variable "tenant_id" {
   description = "Azure tenant ID"
   type        = string
+    default     = "f0445b33-db6a-455d-8714-59168c138593"
 }
