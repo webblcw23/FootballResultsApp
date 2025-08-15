@@ -83,7 +83,7 @@ steps:
     ARM_TENANT_ID: $(ARM_TENANT_ID)
 
 
-- publish: tfplan.out
+- publish: RangersApp/terraform/tfplan.out
   artifact: terraform-plan
 
 
