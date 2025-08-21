@@ -1,58 +1,16 @@
-{
-  "results": [
-    {
-      "opponent": "Viktoria Plzeň",
-      "date": "2025-08-12",
-      "time": "19:45",
-      "competition": "UEFA Champions League",
-      "venue": "Away",
-      "score": "1–2",
-      "status": "Full Time"
-    },
-    {
-      "opponent": "Dundee FC",
-      "date": "2025-08-09",
-      "time": "15:00",
-      "competition": "Scottish Premiership",
-      "venue": "Home",
-      "score": "1–1",
-      "status": "Full Time"
-    },
-    {
-      "opponent": "Viktoria Plzeň",
-      "date": "2025-08-05",
-      "time": "19:45",
-      "competition": "UEFA Champions League",
-      "venue": "Home",
-      "score": "3–0",
-      "status": "Full Time"
-    },
-    {
-      "opponent": "Motherwell",
-      "date": "2025-08-02",
-      "time": "15:00",
-      "competition": "Scottish Premiership",
-      "venue": "Away",
-      "score": "1–1",
-      "status": "Full Time"
-    },
-    {
-      "opponent": "Panathinaikos",
-      "date": "2025-07-30",
-      "time": "19:45",
-      "competition": "UEFA Champions League",
-      "venue": "Away",
-      "score": "1–1",
-      "status": "Full Time"
-    },
-    {
-      "opponent": "Panathinaikos",
-      "date": "2025-07-22",
-      "time": "19:45",
-      "competition": "UEFA Champions League",
-      "venue": "Home",
-      "score": "2–0",
-      "status": "Full Time"
-    }
-  ]
-}
+[
+  {
+    "date": "02/08/2025",
+    "home": "Motherwell",
+    "away": "Rangers",
+    "venue": "Away",
+    "score": "1-1"
+  },
+  {
+    "date": "09/08/2025",
+    "home": "Rangers",
+    "away": "Dundee",
+    "venue": "Home",
+    "score": "1-1"
+  }
+]

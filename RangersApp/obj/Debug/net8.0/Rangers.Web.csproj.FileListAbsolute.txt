@@ -25,7 +25,6 @@
 /Users/lewiswebb/Documents/VSCode_Azure/RangersApp/obj/Debug/net8.0/Rangers.Web.pdb
 /Users/lewiswebb/Documents/VSCode_Azure/RangersApp/obj/Debug/net8.0/Rangers.Web.genruntimeconfig.cache
 /Users/lewiswebb/Documents/VSCode_Azure/RangersApp/obj/Debug/net8.0/ref/Rangers.Web.dll
-/Users/lewiswebb/Documents/VSCode_Azure/RangersApp/bin/Debug/net8.0/data/rangers-fixtures.json
 /Users/lewiswebb/Documents/VSCode_Azure/RangersApp/obj/Debug/net8.0/Rangers.Web.csproj.AssemblyReference.cache
 /Users/lewiswebb/Documents/VSCode_Azure/RangersApp/bin/Debug/net8.0/Ical.Net.dll
 /Users/lewiswebb/Documents/VSCode_Azure/RangersApp/bin/Debug/net8.0/NodaTime.dll

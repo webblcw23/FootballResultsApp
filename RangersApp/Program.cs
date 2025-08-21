@@ -29,8 +29,7 @@ app.MapGet("/", () =>
     </head>
     <body>
         <h1>Welcome to Rangers FC Fixtures</h1>
-        <p>This app shows the 2025/26 season fixtures and past results for Rangers Football Club.</p>
-        <a href='/api/fixtures/html'>View Fixtures</a>
+        <p>This app shows the 2025/26 season past results for Rangers Football Club.</p>
         <a href='/api/results/html'>View Results</a>
     </body>
     </html>";
