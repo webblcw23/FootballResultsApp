@@ -53,6 +53,10 @@ steps:
     displayName: "Run Python Script to Scrape Scores"
     workingDirectory: "RangersApp"
 
+  - script: |
+      echo "Fixtures now updated to latest"
+     
+
   - task: PublishBuildArtifacts@1
     inputs:
       pathToPublish: "RangersApp/Data/rangers-results.json"
