@@ -1,12 +1,13 @@
-trigger:
-  branches:
-    include:
-      - none
-  # The pipeline is not triggered by any code changes, but a scheduled run to update the json file with updated results.
-  schedules:
-    - cron: "0 9 * * 1" # Every Monday at 9am
-      displayName: Weekly Rangers Infra Check
-      always: true
+trigger: none  # disables CI trigger
+
+schedules:
+  - cron: "0 9 * * 1"  # Every Monday at 9am UTC
+    displayName: Weekly Rangers Infra Check
+    always: true
+    branches:
+      include:
+        - main  # or whatever your default branch is
+
 
 pool:
   vmImage: "ubuntu-latest"
@@ -52,7 +53,7 @@ steps:
     displayName: "Run Python Script to Scrape Scores"
     workingDirectory: "RangersApp"
 
-  - task: PublishBuildArtifact@1
+  - task: PublishBuildArtifacts@1
     inputs:
       pathToPublish: "RangersApp/Data/rangers-results.json"
       artifactName: "rangers-results"
