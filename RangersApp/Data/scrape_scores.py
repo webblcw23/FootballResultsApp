@@ -22,7 +22,7 @@ for _, row in past_df.iterrows():
         "score": f"{int(row['FTHG'])}-{int(row['FTAG'])}"
     })
 
-with open("data/rangers-results.json", "w") as f:
+with open("Data/rangers-results.json", "w") as f:
     json.dump(past_matches, f, indent=2)
 
 
