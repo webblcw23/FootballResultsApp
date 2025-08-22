@@ -13,7 +13,7 @@ using System.Reflection;
 [assembly: System.Reflection.AssemblyCompanyAttribute("Rangers.Web")]
 [assembly: System.Reflection.AssemblyConfigurationAttribute("Debug")]
 [assembly: System.Reflection.AssemblyFileVersionAttribute("1.0.0.0")]
-[assembly: System.Reflection.AssemblyInformationalVersionAttribute("1.0.0+7162157a863ff2b0c5217d5b1098a507bdfb9e2c")]
+[assembly: System.Reflection.AssemblyInformationalVersionAttribute("1.0.0+3acdd7d1c1a27ff7f45abd1105f6dedb1bd0d285")]
 [assembly: System.Reflection.AssemblyProductAttribute("Rangers.Web")]
 [assembly: System.Reflection.AssemblyTitleAttribute("Rangers.Web")]
 [assembly: System.Reflection.AssemblyVersionAttribute("1.0.0.0")]

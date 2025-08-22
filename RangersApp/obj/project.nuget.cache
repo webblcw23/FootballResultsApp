@@ -1,12 +1,15 @@
 {
   "version": 2,
-  "dgSpecHash": "8qrPQmbqs4k=",
+  "dgSpecHash": "qSNR7S8zwVA=",
   "success": true,
-  "projectFilePath": "/Users/lewiswebb/Documents/VSCode_Azure/RangersApp/Rangers.Web.csproj",
+  "projectFilePath": "/Users/lewiswebb/Documents/Testing/macbook/DevOps/RangersApp/Rangers.Web.csproj",
   "expectedPackageFiles": [
     "/Users/lewiswebb/.nuget/packages/htmlagilitypack/1.12.2/htmlagilitypack.1.12.2.nupkg.sha512",
     "/Users/lewiswebb/.nuget/packages/ical.net/5.1.0/ical.net.5.1.0.nupkg.sha512",
-    "/Users/lewiswebb/.nuget/packages/nodatime/3.2.2/nodatime.3.2.2.nupkg.sha512"
+    "/Users/lewiswebb/.nuget/packages/nodatime/3.2.2/nodatime.3.2.2.nupkg.sha512",
+    "/Users/lewiswebb/.nuget/packages/microsoft.netcore.app.ref/8.0.13/microsoft.netcore.app.ref.8.0.13.nupkg.sha512",
+    "/Users/lewiswebb/.nuget/packages/microsoft.aspnetcore.app.ref/8.0.13/microsoft.aspnetcore.app.ref.8.0.13.nupkg.sha512",
+    "/Users/lewiswebb/.nuget/packages/microsoft.netcore.app.host.osx-arm64/8.0.13/microsoft.netcore.app.host.osx-arm64.8.0.13.nupkg.sha512"
   ],
   "logs": []
 }
