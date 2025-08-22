@@ -1,38 +1,54 @@
-# Connect to Azure
+# RangersApp Terraform Configuration
+
+# Provider Configuration
+
 provider "azurerm" {
-  subscription_id = "91c0fe80-4528-4bf2-9796-5d0f2a250518"
   features {}
+  client_id       = var.client_id
+  client_secret   = var.client_secret
+  subscription_id = var.subscription_id
+  tenant_id       = var.tenant_id
 }
 
-# Creation of Azure resources for Rangers App
-resource "azurerm_resource_group" "rangers" {
-  name     = "rg-rangers-app"
-  location = "UK South"
+# Resource Group
+resource "azurerm_resource_group" "rg" {
+  name     = var.resource_group_name
+  location = var.location
 }
 
-# Creation of Azure resources for Rangers App Service Plan and Web App
-resource "azurerm_service_plan" "rangers_plan" {
-  name                = "asp-rangers"
-  location            = azurerm_resource_group.rangers.location
-  resource_group_name = azurerm_resource_group.rangers.name
-  sku_name            = "F1"
-  os_type             = "Linux"
+# Azure container registry
+resource "azurerm_container_registry" "acr" {
+  name                = var.acr_name
+  resource_group_name = azurerm_resource_group.rg.name
+  location            = azurerm_resource_group.rg.location
+  sku                 = "Basic"
+  admin_enabled       = true
 }
 
-# Creation of Azure resources for Rangers App Service
-resource "azurerm_linux_web_app" "rangers_web" {
-  name                = "rangers-app"
-  location            = azurerm_resource_group.rangers.location
-  resource_group_name = azurerm_resource_group.rangers.name
-  service_plan_id     = azurerm_service_plan.rangers_plan.id
+# Azure Service Plan
+resource "azurerm_service_plan" "asp" {
+  name                = var.app_service_plan_name
+  location            = azurerm_resource_group.rg.location
+  resource_group_name = azurerm_resource_group.rg.name
+    sku_name = "B1" 
+    os_type = "Windows"
+  }
+
+# Azure Windows Web App
+resource "azurerm_windows_web_app" "app" {
+  name                = var.web_app_name
+  location            = azurerm_resource_group.rg.location
+  resource_group_name = azurerm_resource_group.rg.name
+  service_plan_id = azurerm_service_plan.asp.id
+
   site_config {
-    linux_fx_version = "DOCKER|rangersacr.azurecr.io/rangersapp:latest"
+    linux_fx_version = "DOCKER|${azurerm_container_registry.acr.login_server}/rangersapp:latest"
   }
 
   app_settings = {
-    "DOCKER_REGISTRY_SERVER_URL"      = "https://rangersacr.azurecr.io"
-    "DOCKER_REGISTRY_SERVER_USERNAME" = "rangersacr"
-    "DOCKER_REGISTRY_SERVER_PASSWORD" = "your_password_here" # Replace with your actual password
+    "DOCKER_REGISTRY_SERVER_URL"      = "https://${azurerm_container_registry.acr.login_server}"
+    "DOCKER_REGISTRY_SERVER_USERNAME" = azurerm_container_registry.acr.admin_username
+    "DOCKER_REGISTRY_SERVER_PASSWORD" = azurerm_container_registry.acr.admin_password
+    "WEBSITES_PORT"                   = "80"
   }
-
 }
