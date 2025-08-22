@@ -48,7 +48,6 @@ steps:
   - script: |
       python -m venv venv
       source venv/bin/active
-      pip install -r requirements.txt
       python Data/scrape-scores.py
     displayName: "Run Python Script to Scrape Scores"
     workingDirectory: "RangersApp"
