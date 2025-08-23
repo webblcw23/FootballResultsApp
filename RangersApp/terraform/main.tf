@@ -13,7 +13,7 @@ provider "azurerm" {
 # Resource Group
 data "azurerm_resource_group" "rg" {
   name     = var.resource_group_name
-  location = var.location
+# location = var.location
 }
 
 # Azure container registry
