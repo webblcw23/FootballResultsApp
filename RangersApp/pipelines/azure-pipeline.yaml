@@ -93,6 +93,11 @@ steps:
       terraform import azurerm_resource_group.rg /subscriptions/91c0fe80-4528-4bf2-9796-5d0f2a250518/resourceGroups/rg-rangers-app
     displayName: "Import Resource Group If Not Already Tracked"
     workingDirectory: "RangersApp/terraform"
+    env:
+      ARM_CLIENT_ID: $(ARM_CLIENT_ID)
+      ARM_CLIENT_SECRET: $(ARM_CLIENT_SECRET)
+      ARM_SUBSCRIPTION_ID: $(ARM_SUBSCRIPTION_ID)
+      ARM_TENANT_ID: $(ARM_TENANT_ID)
 
   - script: |
       terraform plan \
