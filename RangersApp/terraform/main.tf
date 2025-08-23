@@ -41,12 +41,8 @@ resource "azurerm_linux_web_app" "app" {
   location            = var.location
   service_plan_id     = azurerm_service_plan.asp.id
 
-  site_config {
-    linux_fx_version = "DOCKER|${var.acr_name}/rangersapp:latest"
-  }
-
-  app_settings = {
-    "WEBSITES_PORT" = "80"
+  container_settings {
+    image_name        = "${var.acr_name}/rangersapp:latest"
   }
 
   identity {
