@@ -117,26 +117,12 @@ steps:
     displayName: "Publish Terraform Plan"
     artifact: terraform-plan
 
-  - task: PowerShell@2
-    displayName: "Terraform Apply Placeholder"
-    inputs:
-      targetType: "inline"
-      script: 'Write-Host "Terraform Apply would be here!"'
-# - stage: TerraformApply
-#  dependsOn: TerraformPlan
-#  jobs:
-#    - job: Apply
-#      pool:
-#        vmImage: 'ubuntu-latest'
-#      steps:
-#        - checkout: self
-
-#        - task: AzureCLI@2
-#          inputs:
-#            azureSubscription: 'rangers-acr-service-connection' # My custom set service connection name
-#            scriptType: 'bash'
-#            scriptLocation: 'inlineScript'
-#            inlineScript: |
-#              cd terraform
-#              terraform init
-#              terraform apply -auto-approve tfplan.out
+  - script: |
+      terraform apply -auto-approve tfplan.out
+    displayName: "Terraform Apply"
+    workingDirectory: "RangersApp/terraform"
+    env:
+      ARM_CLIENT_ID: $(ARM_CLIENT_ID)
+      ARM_CLIENT_SECRET: $(ARM_CLIENT_SECRET)
+      ARM_SUBSCRIPTION_ID: $(ARM_SUBSCRIPTION_ID)
+      ARM_TENANT_ID: $(ARM_TENANT_ID)
