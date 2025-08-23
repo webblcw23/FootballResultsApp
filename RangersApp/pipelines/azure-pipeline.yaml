@@ -6,8 +6,7 @@ schedules:
     always: true
     branches:
       include:
-        - main  # or whatever your default branch is
-
+        - main
 
 pool:
   vmImage: "ubuntu-latest"
@@ -16,8 +15,13 @@ variables:
   ACR_NAME: "rangers-docker-acr"
   IMAGE_NAME: "rangersapp"
   DOCKER_IMAGE: "$(ACR_NAME).azurecr.io/$(IMAGE_NAME):latest"
+  ARM_CLIENT_ID: "$(ARM_CLIENT_ID)"
+  ARM_CLIENT_SECRET: "$(ARM_CLIENT_SECRET)"
+  ARM_SUBSCRIPTION_ID: "$(ARM_SUBSCRIPTION_ID)"
+  ARM_TENANT_ID: "$(ARM_TENANT_ID)"
 
 steps:
+  # .NET Build & Test
   - task: DotNetCoreCLI@2
     displayName: "Restore RangersApp"
     inputs:
@@ -37,79 +41,67 @@ steps:
       command: "test"
       projects: "RangersApp/Rangers.Web.csproj"
 
-  # Python section required for scraping the most recent scores using my scrape_scores.py script within the Data folder.
-
+  # Python Script for Scraping Scores
   - task: UsePythonVersion@0
     displayName: "Setting Python Version"
     inputs:
-      versionSpec: "3.10" # Use the Python 3.10 version
+      versionSpec: "3.10"
       addToPath: true
 
   - script: |
       python -m venv venv
-      source venv/bin/active
+      source venv/bin/activate
       pip install pandas
       python Data/scrape_scores.py
     displayName: "Run Python Script to Scrape Scores"
     workingDirectory: "RangersApp"
 
-  - script: |
-      echo "Fixtures now updated to latest"
-     
+  - script: echo "Fixtures now updated to latest"
+    displayName: "Confirm Score Update"
 
   - task: PublishBuildArtifacts@1
     inputs:
       pathToPublish: "RangersApp/Data/rangers-results.json"
       artifactName: "rangers-results"
 
+  # Docker Build & Push
   - task: Docker@2
     displayName: "Build and Push Docker Image"
     inputs:
-      containerRegistry: "rangers-docker-acr" # My custom set service connection name
+      containerRegistry: "rangers-docker-acr"
       repository: "$(IMAGE_NAME)"
       command: "buildAndPush"
       tags: |
         latest
 
+  # Terraform Setup
   - task: TerraformInstaller@1
     displayName: "Install Terraform"
     inputs:
-      terraformVersion: "1.7.5" # or whatever version you prefer
+      terraformVersion: "1.7.5"
 
-  #- task: AzureCLI@2
-  # displayName: 'Inject Terraform Auth Env Vars'
-  #  inputs:
-  #    azureSubscription: 'rangers-acr-service-connection'
-  #    scriptType: 'bash'
-  #    scriptLocation: 'inlineScript'
-  #    inlineScript: |
-  #      echo "##vso[task.setvariable variable=ARM_CLIENT_ID]$servicePrincipalId"
-  #      echo "##vso[task.setvariable variable=ARM_CLIENT_SECRET]$servicePrincipalKey"
-  #      echo "##vso[task.setvariable variable=ARM_SUBSCRIPTION_ID]$subscriptionId"
-  #      echo "##vso[task.setvariable variable=ARM_TENANT_ID]$tenantId"
+  - script: terraform init
+    displayName: "Terraform Init"
+    workingDirectory: "RangersApp/terraform"
+
+  - script: terraform validate
+    displayName: "Terraform Validate"
+    workingDirectory: "RangersApp/terraform"
 
   - script: |
-      echo "Client ID: $ARM_CLIENT_ID"
-      echo "Tenant ID: $ARM_TENANT_ID"
-    displayName: "Debug Env Vars"
-    env:
-      ARM_CLIENT_ID: $(ARM_CLIENT_ID)
-      ARM_SUBSCRIPTION_ID: $(ARM_SUBSCRIPTION_ID)
-      ARM_TENANT_ID: $(ARM_TENANT_ID)
-
-  - script: |
+      terraform state list | grep azurerm_resource_group.rg || \
       terraform import azurerm_resource_group.rg /subscriptions/91c0fe80-4528-4bf2-9796-5d0f2a250518/resourceGroups/rg-rangers-app
-    displayName: 'Import Existing Resource Group'
+    displayName: "Import Resource Group If Not Already Tracked"
+    workingDirectory: "RangersApp/terraform"
 
   - script: |
-      terraform init
       terraform plan \
-      -out=tfplan.out \
+        -out=tfplan.out \
         -var="client_id=$ARM_CLIENT_ID" \
         -var="client_secret=$ARM_CLIENT_SECRET" \
         -var="subscription_id=$ARM_SUBSCRIPTION_ID" \
         -var="tenant_id=$ARM_TENANT_ID"
-    displayName: "Terraform Init and Plan"
+    displayName: "Terraform Plan"
     workingDirectory: "RangersApp/terraform"
     env:
       ARM_CLIENT_ID: $(ARM_CLIENT_ID)
@@ -121,8 +113,7 @@ steps:
     displayName: "Publish Terraform Plan"
     artifact: terraform-plan
 
-  - script: |
-      terraform apply -auto-approve tfplan.out
+  - script: terraform apply -auto-approve tfplan.out
     displayName: "Terraform Apply"
     workingDirectory: "RangersApp/terraform"
     env:
