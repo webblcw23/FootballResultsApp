@@ -29,7 +29,7 @@ provider "azurerm" {
 resource "azurerm_service_plan" "asp" {
   name                = var.app_service_plan_name
   location            = var.location
-  resource_group_name = var.resource_group_name.name
+  resource_group_name = var.resource_group_name
     sku_name = "B1" 
     os_type = "Linux"
   }
@@ -37,7 +37,7 @@ resource "azurerm_service_plan" "asp" {
 # Azure Linux Web App
 resource "azurerm_linux_web_app" "app" {
   name                = "rangersapp"
-  resource_group_name = var.resource_group_name.name
+  resource_group_name = var.resource_group_name
   location            = var.location
   service_plan_id     = azurerm_service_plan.asp.id
 
