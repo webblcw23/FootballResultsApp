@@ -20,7 +20,7 @@ data "azurerm_resource_group" "rg" {
 data "azurerm_container_registry" "acr" {
   name                = var.acr_name
   resource_group_name = data.azurerm_resource_group.rg.name
-  location            = data.azurerm_resource_group.rg.location
+ # location            = data.azurerm_resource_group.rg.location
   sku                 = "Basic"
   admin_enabled       = true
 }
@@ -28,7 +28,7 @@ data "azurerm_container_registry" "acr" {
 # Azure Service Plan
 resource "azurerm_service_plan" "asp" {
   name                = var.app_service_plan_name
-  location            = data.azurerm_resource_group.rg.location
+ # location            = data.azurerm_resource_group.rg.location
   resource_group_name = data.azurerm_resource_group.rg.name
     sku_name = "B1" 
     os_type = "Linux"
@@ -38,7 +38,7 @@ resource "azurerm_service_plan" "asp" {
 resource "azurerm_linux_web_app" "app" {
   name                = "rangersapp"
   resource_group_name = data.azurerm_resource_group.rg.name
-  location            = data.azurerm_resource_group.rg.location
+ # location            = data.azurerm_resource_group.rg.location
   service_plan_id     = azurerm_service_plan.asp.id
 
   site_config {
