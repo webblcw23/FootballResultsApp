@@ -31,24 +31,27 @@ resource "azurerm_service_plan" "asp" {
   location            = azurerm_resource_group.rg.location
   resource_group_name = azurerm_resource_group.rg.name
     sku_name = "B1" 
-    os_type = "Windows"
+    os_type = "Linux"
   }
 
-# Azure Windows Web App
-resource "azurerm_windows_web_app" "app" {
-  name                = var.web_app_name
-  location            = azurerm_resource_group.rg.location
+# Azure Linux Web App
+resource "azurerm_linux_web_app" "app" {
+  name                = "rangersapp"
   resource_group_name = azurerm_resource_group.rg.name
-  service_plan_id = azurerm_service_plan.asp.id
+  location            = azurerm_resource_group.rg.location
+  service_plan_id     = azurerm_service_plan.app_service_plan.id
 
   site_config {
     linux_fx_version = "DOCKER|${azurerm_container_registry.acr.login_server}/rangersapp:latest"
   }
 
   app_settings = {
-    "DOCKER_REGISTRY_SERVER_URL"      = "https://${azurerm_container_registry.acr.login_server}"
-    "DOCKER_REGISTRY_SERVER_USERNAME" = azurerm_container_registry.acr.admin_username
-    "DOCKER_REGISTRY_SERVER_PASSWORD" = azurerm_container_registry.acr.admin_password
-    "WEBSITES_PORT"                   = "80"
+    "WEBSITES_PORT" = "80"
+  }
+
+  identity {
+    type = "SystemAssigned"
   }
 }
+
+
