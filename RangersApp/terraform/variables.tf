@@ -1,30 +1,5 @@
 #varibles for terraform to azure
 
-#client id
-variable "client_id" {
-  description = "The Client ID for the Azure Service Principal."
-  type        = string
-}   
-
-#client secret
-variable "client_secret" {
-  description = "The Client Secret for the Azure Service Principal."
-  type        = string
-  sensitive   = true
-}
-
-#subscription id
-variable "subscription_id" {
-  description = "The Subscription ID for the Azure Subscription."
-  type        = string
-}
-
-#tenant id
-variable "tenant_id" {
-  description = "The Tenant ID for the Azure Active Directory."
-  type        = string
-}
-
 #resource group name
 variable "resource_group_name" {
   description = "The name of the Resource Group to create."
