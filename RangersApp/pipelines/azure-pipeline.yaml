@@ -89,9 +89,10 @@ steps:
     workingDirectory: "RangersApp/terraform"
 
   - script: |
-      echo "Client ID: $(ARM_CLIENT_ID)"
-      echo "Tenant ID: $(ARM_TENANT_ID)"
-      displayName: "Check Vars"
+      echo "Client ID is: $(ARM_CLIENT_ID)"
+      echo "ARM TENENT ID is: $(ARM_TENANT_ID)"
+      echo "ARM SUB ID is: $(ARM_SUBSCRIPTION_ID)"
+    displayName: "Check Vars"
 
   - script: |
       terraform plan \
