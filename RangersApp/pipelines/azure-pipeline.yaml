@@ -89,6 +89,10 @@ steps:
     workingDirectory: "RangersApp/terraform"
 
   - script: |
+      echo "Client ID: $(ARM_CLIENT_ID)"
+      echo "Tenant ID: $(ARM_TENANT_ID)"
+
+  - script: |
       terraform plan \
         -out=tfplan.out \
         -var="client_id=$ARM_CLIENT_ID" \
