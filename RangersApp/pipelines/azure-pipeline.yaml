@@ -91,6 +91,7 @@ steps:
   - script: |
       echo "Client ID: $(ARM_CLIENT_ID)"
       echo "Tenant ID: $(ARM_TENANT_ID)"
+      displayName: "Check Vars"
 
   - script: |
       terraform plan \
