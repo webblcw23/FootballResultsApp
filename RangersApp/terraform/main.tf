@@ -43,17 +43,21 @@ resource "azurerm_linux_web_app" "app" {
   service_plan_id     = azurerm_service_plan.asp.id
 
   site_config {
-    linux_fx_version = "DOCKER|${azurerm_container_registry.acr.login_server}/rangersapp:latest"
+    linux_fx_version = "DOCKER|" + azurerm_container_registry.acr.login_server + "/rangersapp:latest"
   }
 
   app_settings = {
-    "WEBSITES_PORT" = "80"
+    "WEBSITES_PORT"                 = "80"
+    "DOCKER_REGISTRY_SERVER_URL"   = "https://${azurerm_container_registry.acr.login_server}"
+    "DOCKER_REGISTRY_SERVER_USERNAME" = azurerm_container_registry.acr.admin_username
+    "DOCKER_REGISTRY_SERVER_PASSWORD" = azurerm_container_registry.acr.admin_password
   }
 
   identity {
     type = "SystemAssigned"
   }
 }
+
 
 
 
