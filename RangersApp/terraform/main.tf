@@ -12,25 +12,25 @@ provider "azurerm" {
 }
 
 # Resource Group
-resource "azurerm_resource_group" "rg" {
-  name     = var.resource_group_name
-   location = var.location
-}
+#resource "azurerm_resource_group" "rg" {
+#  name     = var.resource_group_name
+#   location = var.location
+#}
 
 # Azure container registry
-resource "azurerm_container_registry" "acr" {
-  name                = var.acr_name
-  resource_group_name = azurerm_resource_group.rg.name
-   location            = var.location
-  sku                 = "Basic"
-   admin_enabled       = true
-}
+#resource "azurerm_container_registry" "acr" {
+#  name                = var.acr_name
+#  resource_group_name = azurerm_resource_group.rg.name
+#   location            = var.location
+#  sku                 = "Basic"
+#   admin_enabled       = true
+#}
 
 # Azure Service Plan
 resource "azurerm_service_plan" "asp" {
   name                = var.app_service_plan_name
   location            = var.location
-  resource_group_name = azurerm_resource_group.rg.name
+  resource_group_name = var.resource_group_name
     sku_name = "B1" 
     os_type = "Linux"
   }
@@ -38,7 +38,7 @@ resource "azurerm_service_plan" "asp" {
 # Azure Linux Web App
 resource "azurerm_linux_web_app" "app" {
   name                = "rangersapp"
-  resource_group_name = azurerm_resource_group.rg.name
+  resource_group_name = var.resource_group_name
   location            = var.location
   service_plan_id     = azurerm_service_plan.asp.id
 
