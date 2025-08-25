@@ -103,6 +103,12 @@ steps:
         -var="tenant_id=$ARM_TENANT_ID"
     displayName: "Terraform Plan"
     workingDirectory: "RangersApp/terraform"
+    env:
+      ARM_CLIENT_ID: $(ARM_CLIENT_ID)
+      ARM_CLIENT_SECRET: $(ARM_CLIENT_SECRET)
+      ARM_TENANT_ID: $(ARM_TENANT_ID)
+      ARM_SUBSCRIPTION_ID: $(ARM_SUBSCRIPTION_ID)
+
 
   - publish: RangersApp/terraform/tfplan.out
     displayName: "Publish Terraform Plan"
@@ -111,3 +117,9 @@ steps:
   - script: terraform apply -auto-approve tfplan.out
     displayName: "Terraform Apply"
     workingDirectory: "RangersApp/terraform"
+    env:
+      ARM_CLIENT_ID: $(ARM_CLIENT_ID)
+      ARM_CLIENT_SECRET: $(ARM_CLIENT_SECRET)
+      ARM_TENANT_ID: $(ARM_TENANT_ID)
+      ARM_SUBSCRIPTION_ID: $(ARM_SUBSCRIPTION_ID)
+
