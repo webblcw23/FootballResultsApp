@@ -43,7 +43,7 @@ resource "azurerm_linux_web_app" "app" {
   service_plan_id     = azurerm_service_plan.asp.id
 
   site_config {
-    linux_fx_version = "DOCKER|" + azurerm_container_registry.acr.login_server + "/rangersapp:latest"
+      linux_fx_version = "DOCKER|${azurerm_container_registry.acr.login_server}/rangersapp:latest"
   }
 
   app_settings = {
