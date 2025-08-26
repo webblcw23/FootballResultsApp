@@ -123,3 +123,15 @@ steps:
       ARM_TENANT_ID: $(ARM_TENANT_ID)
       ARM_SUBSCRIPTION_ID: $(ARM_SUBSCRIPTION_ID)
 
+
+  - task: AzureCLI@2
+    displayName: "Restart Rangers Web App"
+    inputs:
+      azureSubscription: "rangers-acr-service-connection"
+      scriptType: bash
+      scriptLocation: inlineScript
+      inlineScript: |
+        az webapp restart \
+        --name rangers-webapp \
+        --resource-group rg-rangers-app
+
