@@ -74,13 +74,21 @@ steps:
       tags: |
         latest
 
+  - task: AzureCLI@2
+    inputs:
+      azureSubscription: 'rangers-acr-service-connection'
+      scriptType: bash
+      scriptLocation: inlineScript
+      inlineScript: |
+        az account show      
+
   # Terraform Setup
   - task: TerraformInstaller@1
     displayName: "Install Terraform"
     inputs:
       terraformVersion: "1.7.5"
 
-  - script: terraform init
+  - script: terraform init -reconfigure
     displayName: "Terraform Init"
     workingDirectory: "RangersApp/terraform"
 
