@@ -86,6 +86,8 @@ steps:
       command: "buildAndPush"
       Dockerfile: "RangersApp/Dockerfile"
       buildContext: "RangersApp"
+      tags: |
+        latest
 
 
   # Terraform Setup
