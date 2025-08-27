@@ -57,9 +57,6 @@ steps:
     displayName: "Run Python Script to Scrape Scores"
     workingDirectory: "RangersApp"
 
-  - script: echo "Fixtures now updated to latest"
-    displayName: "Confirm Score Update"
-
   - task: PublishBuildArtifacts@1
     inputs:
       pathToPublish: "RangersApp/Data/rangers-results.json"
@@ -75,6 +72,9 @@ steps:
   - script: mv RangersApp/Data/rangers-results/rangers-results.json RangersApp/Data/rangers-results.json
     displayName: "Move JSON to Expected Path"
   
+  - script: cat RangersApp/Data/rangers-results.json
+    displayName: "Verify JSON After Move"
+
     
 
   # Docker Build & Push
