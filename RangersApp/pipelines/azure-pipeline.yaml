@@ -75,6 +75,7 @@ steps:
         latest
 
   - task: AzureCLI@2
+    displayName: "Initial Azure Login"
     inputs:
       azureSubscription: 'rangers-acr-service-connection'
       scriptType: bash
