@@ -23,8 +23,12 @@ for _, row in past_df.iterrows():
         "score": f"{int(row['FTHG'])}-{int(row['FTAG'])}"
     })
 
-with open("/app/Data/rangers-results.json") as f:
+# Write JSON to local path (inside pipeline workspace)
+json_path = os.path.join("Data", "rangers-results.json")
+with open(json_path, "w") as f:
     json.dump(past_matches, f, indent=2)
+
+# ✅ Remove any attempt to read from /app/Data/ — that’s runtime-only
 
 
 # Can now delete the CSV file if not needed
