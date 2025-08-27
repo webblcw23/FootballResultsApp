@@ -8,27 +8,12 @@ provider "azurerm" {
   client_secret   = var.client_secret
   subscription_id = var.subscription_id
   tenant_id       = var.tenant_id
-
 }
-
-#terraform block
-
-terraform {
-  required_providers {
-    azurerm = {
-      source  = "hashicorp/azurerm"
-      version = ">= 3.75.0"
-    }
-  }
-
-  required_version = ">= 1.3.0"
-}
-
 
 # Resource Group
 resource "azurerm_resource_group" "rg" {
   name     = var.resource_group_name
-   location = var.location
+  location = var.location
 }
 
 # Azure container registry
@@ -49,31 +34,21 @@ resource "azurerm_service_plan" "asp" {
     os_type = "Linux"
   }
 
-# Azure Linux Web App
-
-resource "azurerm_linux_web_app" "app" {
-  name                = "rangers-webapp"
-  resource_group_name = azurerm_resource_group.rg.name
+# Azure Windows Web App
+resource "azurerm_windows_web_app" "app" {
+  name                = var.web_app_name
   location            = azurerm_resource_group.rg.location
-  service_plan_id     = azurerm_service_plan.asp.id
+  resource_group_name = azurerm_resource_group.rg.name
+  service_plan_id = azurerm_service_plan.asp.id
 
   site_config {
-    application_stack {
-      docker_image_name = "${azurerm_container_registry.acr.login_server}/rangersapp:latest"
-      docker_registry_url = "https://${azurerm_container_registry.acr.login_server}"
-      docker_registry_username = azurerm_container_registry.acr.admin_username
-      docker_registry_password = azurerm_container_registry.acr.admin_password
-    }
-    always_on = true
+    linux_fx_version = "DOCKER|${azurerm_container_registry.acr.login_server}/rangersapp:latest"
   }
 
   app_settings = {
-    "WEBSITES_PORT" = "80"
+    "DOCKER_REGISTRY_SERVER_URL"      = "https://${azurerm_container_registry.acr.login_server}"
+    "DOCKER_REGISTRY_SERVER_USERNAME" = azurerm_container_registry.acr.admin_username
+    "DOCKER_REGISTRY_SERVER_PASSWORD" = azurerm_container_registry.acr.admin_password
+    "WEBSITES_PORT"                   = "80"
   }
 }
-
-
-
-
-
-
