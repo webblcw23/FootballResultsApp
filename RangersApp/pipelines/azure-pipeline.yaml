@@ -65,6 +65,14 @@ steps:
       pathToPublish: "RangersApp/Data/rangers-results.json"
       artifactName: "rangers-results"
 
+  - task: DownloadBuildArtifacts@0
+    displayName: "Download Updated Results Artifact"
+    inputs:
+      buildType: 'current'
+      downloadPath: 'RangersApp/Data'
+      artifactName: 'rangers-results'
+    
+
   # Docker Build & Push
   - task: Docker@2
     displayName: "Build and Push Docker Image"
@@ -72,8 +80,9 @@ steps:
       containerRegistry: "rangers-docker-acr"
       repository: "$(IMAGE_NAME)"
       command: "buildAndPush"
-      tags: |
-        latest
+      Dockerfile: "RangersApp/Dockerfile"
+      buildContext: "RangersApp"
+
 
   # Terraform Setup
   - task: TerraformInstaller@1
