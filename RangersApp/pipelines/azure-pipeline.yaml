@@ -80,7 +80,8 @@ steps:
       azureSubscription: 'rangers-acr-service-connection'
       scriptType: 'ps'
       scriptLocation: 'inlineScript'
-      inlineScript: az account show  
+      inlineScript: |
+        az account show 
 
   # Terraform Setup
   - task: TerraformInstaller@1
