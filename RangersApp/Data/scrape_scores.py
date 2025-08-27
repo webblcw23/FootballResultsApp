@@ -1,5 +1,6 @@
-#import pandas as pd
+import pandas as pd
 import json
+import os
 
 # Source CSV for 2025–2026 Scottish Premiership
 url = "https://www.football-data.co.uk/mmz4281/2526/SC0.csv"
