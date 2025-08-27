@@ -12,7 +12,8 @@ WORKDIR /app
 COPY --from=build /app/out ./
 
 # Copy your results file
-COPY Data/rangers-results.json Data/rangers-results.json
+COPY Data/rangers-results.json /app/Data/rangers-results.json
+
 
 EXPOSE 80
 ENTRYPOINT ["dotnet", "Rangers.Web.dll"]
