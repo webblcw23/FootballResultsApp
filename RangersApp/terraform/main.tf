@@ -86,6 +86,18 @@ resource "azurerm_linux_web_app" "app" {
 }
 
 
+resource "null_resource" "force_redeploy" {
+  triggers = {
+    timestamp = timestamp()
+  }
+
+  provisioner "local-exec" {
+    command = "az webapp restart --name rangers-webapp --resource-group rg-rangers-app"
+  }
+}
+
+
+
 output "acr_login_server" {
   value = azurerm_container_registry.acr.login_server
 }
