@@ -71,6 +71,10 @@ steps:
       buildType: 'current'
       downloadPath: 'RangersApp/Data'
       artifactName: 'rangers-results'
+
+  - script: mv RangersApp/Data/rangers-results/rangers-results.json RangersApp/Data/rangers-results.json
+    displayName: "Move JSON to Expected Path"
+  
     
 
   # Docker Build & Push
