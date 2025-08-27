@@ -141,4 +141,5 @@ steps:
         az webapp restart \
         --name rangers-webapp \
         --resource-group rg-rangers-app
+      
 
