@@ -1,5 +1,6 @@
 trigger: none  # disables CI trigger
 
+
 schedules:
   - cron: "0 9 * * 1"  # Every Monday at 9am UTC
     displayName: Weekly Rangers Infra Check
@@ -75,13 +76,11 @@ steps:
         latest
 
   - task: AzureCLI@2
-    displayName: "Initial Azure Login"
     inputs:
-      azureSubscription: "rangers-acr-service-connection"
-      scriptType: bash
-      scriptLocation: inlineScript
-      inlineScript: |
-        az account show      
+      azureSubscription: 'rangers-acr-service-connection'
+      scriptType: 'ps'
+      scriptLocation: 'inlineScript'
+      inlineScript: az account show  
 
   # Terraform Setup
   - task: TerraformInstaller@1
