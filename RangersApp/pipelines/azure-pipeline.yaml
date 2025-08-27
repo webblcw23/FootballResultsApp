@@ -75,14 +75,6 @@ steps:
       tags: |
         latest
 
-  - task: AzureCLI@2
-    inputs:
-      azureSubscription: 'rangers-acr-service-connection'
-      scriptType: 'ps'
-      scriptLocation: 'inlineScript'
-      inlineScript: |
-        az account show 
-
   # Terraform Setup
   - task: TerraformInstaller@1
     displayName: "Install Terraform"
