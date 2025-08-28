@@ -49,48 +49,6 @@ steps:
       versionSpec: "3.10"
       addToPath: true
 
-  - script: |
-      python -m venv venv
-      source venv/bin/activate
-      pip install pandas
-      python Data/scrape_scores.py
-    displayName: "Run Python Script to Scrape Scores"
-    workingDirectory: "RangersApp"
-
-  - task: PublishBuildArtifacts@1
-    inputs:
-      pathToPublish: "RangersApp/Data/rangers-results.json"
-      artifactName: "rangers-results"
-
-  - task: DownloadBuildArtifacts@0
-    displayName: "Download Updated Results Artifact"
-    inputs:
-      buildType: 'current'
-      downloadPath: 'RangersApp/Data'
-      artifactName: 'rangers-results'
-
-  - script: mv RangersApp/Data/rangers-results/rangers-results.json RangersApp/Data/rangers-results.json
-    displayName: "Move JSON to Expected Path"
-  
-  - script: cat RangersApp/Data/rangers-results.json
-    displayName: "Verify JSON After Move"
-
-    
-
-  # Docker Build & Push
-  - task: Docker@2
-    displayName: "Build and Push Docker Image"
-    inputs:
-      containerRegistry: "rangers-docker-acr"
-      repository: "$(IMAGE_NAME)"
-      command: "buildAndPush"
-      Dockerfile: "RangersApp/Dockerfile"
-      buildContext: "RangersApp"
-      tags: |
-        latest
-        $(Build.BuildId)
-
-
   # Terraform Setup
   - task: TerraformInstaller@1
     displayName: "Install Terraform"
@@ -145,6 +103,49 @@ steps:
       ARM_CLIENT_SECRET: $(ARM_CLIENT_SECRET)
       ARM_TENANT_ID: $(ARM_TENANT_ID)
       ARM_SUBSCRIPTION_ID: $(ARM_SUBSCRIPTION_ID)
+   
+
+  - script: |
+      python -m venv venv
+      source venv/bin/activate
+      pip install pandas
+      python Data/scrape_scores.py
+    displayName: "Run Python Script to Scrape Scores"
+    workingDirectory: "RangersApp"
+
+  - task: PublishBuildArtifacts@1
+    inputs:
+      pathToPublish: "RangersApp/Data/rangers-results.json"
+      artifactName: "rangers-results"
+
+  - task: DownloadBuildArtifacts@0
+    displayName: "Download Updated Results Artifact"
+    inputs:
+      buildType: 'current'
+      downloadPath: 'RangersApp/Data'
+      artifactName: 'rangers-results'
+
+  - script: mv RangersApp/Data/rangers-results/rangers-results.json RangersApp/Data/rangers-results.json
+    displayName: "Move JSON to Expected Path"
+  
+  - script: cat RangersApp/Data/rangers-results.json
+    displayName: "Verify JSON After Move"
+
+    
+
+  # Docker Build & Push
+  - task: Docker@2
+    displayName: "Build and Push Docker Image"
+    inputs:
+      containerRegistry: "rangers-docker-acr"
+      repository: "$(IMAGE_NAME)"
+      command: "buildAndPush"
+      Dockerfile: "RangersApp/Dockerfile"
+      buildContext: "RangersApp"
+      tags: |
+        latest
+        $(Build.BuildId)
+
 
 
   - task: AzureCLI@2
