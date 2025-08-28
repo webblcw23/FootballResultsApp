@@ -90,3 +90,10 @@ output "acr_login_server" {
   value = azurerm_container_registry.acr.login_server
 }
 
+
+
+# Ensure the backend configuration is set up correctly before running Terraform commands
+# Run the following Azure CLI commands to create the necessary resources for the backend:
+# az group create --name rg-rangers-app --location uksouth
+# az storage account create --name rangersappstorageacct --resource-group rg-rangers-app --sku Standard_LRS
+# az storage container create --name tfstate --account-name rangersappstorageacct
