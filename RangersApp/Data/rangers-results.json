@@ -1,16 +1,18 @@
-[
-  {
-    "date": "02/08/2025",
-    "home": "Motherwell",
-    "away": "Rangers",
-    "venue": "Away",
-    "score": "1-1"
-  },
-  {
-    "date": "09/08/2025",
-    "home": "Rangers",
-    "away": "Dundee",
-    "venue": "Home",
-    "score": "1-1"
-  }
-]
+{
+  "results": [
+    {
+      "date": "02/08/2025",
+      "home": "Motherwell",
+      "away": "Rangers",
+      "venue": "Away",
+      "score": "1-1"
+    },
+    {
+      "date": "09/08/2025",
+      "home": "Rangers",
+      "away": "Dundee",
+      "venue": "Home",
+      "score": "1-1"
+    }
+  ]
+}

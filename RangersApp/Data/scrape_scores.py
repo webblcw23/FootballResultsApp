@@ -26,7 +26,7 @@ for _, row in past_df.iterrows():
 # Write JSON to local path (inside pipeline workspace)
 json_path = os.path.join("Data", "rangers-results.json")
 with open(json_path, "w") as f:
-    json.dump(past_matches, f, indent=2)
+    json.dump({ "results": past_matches }, f, indent=2)
 
 # ✅ Remove any attempt to read from /app/Data/ — that’s runtime-only
 
