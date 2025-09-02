@@ -45,4 +45,15 @@ else:
 
 
 
-# to run this script - python3 Data/scrape_scores.py
+# to run this script 
+# # Create a virtual environment
+# python3 -m venv .venv
+
+# Activate it
+# source .venv/bin/activate
+
+# Install pandas inside it
+# pip install pandas
+
+# Run your script
+ #python Data/scrape_scores.py

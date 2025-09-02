@@ -13,6 +13,20 @@
       "away": "Dundee",
       "venue": "Home",
       "score": "1-1"
+    },
+    {
+      "date": "24/08/2025",
+      "home": "St Mirren",
+      "away": "Rangers",
+      "venue": "Away",
+      "score": "1-1"
+    },
+    {
+      "date": "31/08/2025",
+      "home": "Rangers",
+      "away": "Celtic",
+      "venue": "Home",
+      "score": "0-0"
     }
   ]
 }
