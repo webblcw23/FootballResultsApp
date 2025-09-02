@@ -42,6 +42,10 @@ ENTRYPOINT ["dotnet", "Rangers.Web.dll"]
 # Visit http://<minikube-ip>:<NodePort> in your browser to access the application.
 # http://<minikube-ip>:30080/results
 
+# If the porting and url doesnt work, try manually forwarding the port using:
+#   kubectl port-forward svc/rangersapp-service 8080:80
+
+
 
 # To clean up the deployment and service, use:
 # kubectl delete -f k8s/deployment.yaml
