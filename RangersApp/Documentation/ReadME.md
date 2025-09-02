@@ -52,6 +52,8 @@ python3 Data/scrape_scores.py
 docker build -t rangersapp:local .
 docker run -p 5050:80 rangersapp:local
 
+
+----- Kubernetes extra ------
 # Adding a Local Test for Kubernetes via MiniKube
 # Esnure Minikube is running 
 minikube start
@@ -80,7 +82,7 @@ Local testing completed successfully through dotnet run before testing with Dock
 
 
 ## Project Outcome 
-This project demonstrates full-stack platform ownership, real-world CI/CD troubleshooting, infrastructure-as-code mastery, and secure cloud deployment. Built with resilience, iteration, and a focus on maintainability.
+This project demonstrates full-stack platform ownership, real-world CI/CD troubleshooting, infrastructure-as-code usage, and secure cloud deployment. Built with resilience, iteration, and a focus on maintainability.
 
 
 
