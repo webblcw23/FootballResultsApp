@@ -38,10 +38,8 @@ public class ResultsController : ControllerBase
             </style>
         </head>
         <body>
-            <div class='header'>
                 <img src='/images/rangers-logo.png' class='logo' alt='Rangers FC Logo' />
                 <h2>Rangers Results 2025/26</h2>
-            </div>
             <table>
                 <tr><th>Date</th><th>Home</th><th>Away</th><th>Venue</th><th>Score</th></tr>";
 

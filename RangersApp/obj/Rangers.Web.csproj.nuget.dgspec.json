@@ -1,17 +1,17 @@
 {
   "format": 1,
   "restore": {
-    "/Users/lewiswebb/Documents/Testing/macbook/DevOps/RangersApp/Rangers.Web.csproj": {}
+    "/Users/lewiswebb/Documents/VSCode_Azure/RangersApp/Rangers.Web.csproj": {}
   },
   "projects": {
-    "/Users/lewiswebb/Documents/Testing/macbook/DevOps/RangersApp/Rangers.Web.csproj": {
+    "/Users/lewiswebb/Documents/VSCode_Azure/RangersApp/Rangers.Web.csproj": {
       "version": "1.0.0",
       "restore": {
-        "projectUniqueName": "/Users/lewiswebb/Documents/Testing/macbook/DevOps/RangersApp/Rangers.Web.csproj",
+        "projectUniqueName": "/Users/lewiswebb/Documents/VSCode_Azure/RangersApp/Rangers.Web.csproj",
         "projectName": "Rangers.Web",
-        "projectPath": "/Users/lewiswebb/Documents/Testing/macbook/DevOps/RangersApp/Rangers.Web.csproj",
+        "projectPath": "/Users/lewiswebb/Documents/VSCode_Azure/RangersApp/Rangers.Web.csproj",
         "packagesPath": "/Users/lewiswebb/.nuget/packages/",
-        "outputPath": "/Users/lewiswebb/Documents/Testing/macbook/DevOps/RangersApp/obj/",
+        "outputPath": "/Users/lewiswebb/Documents/VSCode_Azure/RangersApp/obj/",
         "projectStyle": "PackageReference",
         "configFilePaths": [
           "/Users/lewiswebb/.nuget/NuGet/NuGet.Config"
@@ -38,7 +38,7 @@
           "auditLevel": "low",
           "auditMode": "direct"
         },
-        "SdkAnalysisLevel": "9.0.200"
+        "SdkAnalysisLevel": "9.0.300"
       },
       "frameworks": {
         "net8.0": {
@@ -64,20 +64,6 @@
           ],
           "assetTargetFallback": true,
           "warn": true,
-          "downloadDependencies": [
-            {
-              "name": "Microsoft.AspNetCore.App.Ref",
-              "version": "[8.0.13, 8.0.13]"
-            },
-            {
-              "name": "Microsoft.NETCore.App.Host.osx-arm64",
-              "version": "[8.0.13, 8.0.13]"
-            },
-            {
-              "name": "Microsoft.NETCore.App.Ref",
-              "version": "[8.0.13, 8.0.13]"
-            }
-          ],
           "frameworkReferences": {
             "Microsoft.AspNetCore.App": {
               "privateAssets": "none"
@@ -86,7 +72,7 @@
               "privateAssets": "all"
             }
           },
-          "runtimeIdentifierGraphPath": "/usr/local/share/dotnet/sdk/9.0.200/PortableRuntimeIdentifierGraph.json"
+          "runtimeIdentifierGraphPath": "/usr/local/share/dotnet/sdk/9.0.304/PortableRuntimeIdentifierGraph.json"
         }
       }
     }
