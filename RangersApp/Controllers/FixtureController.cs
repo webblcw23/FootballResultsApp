@@ -39,7 +39,7 @@ public class ResultsController : ControllerBase
         </head>
         <body>
                 <img src='/images/rangers-logo.png' class='logo' alt='Rangers FC Logo' />
-                <h2>Rangers Results 2025/26</h2>
+                <h2>Rangers League Results 2025/26</h2>
             <table>
                 <tr><th>Date</th><th>Home</th><th>Away</th><th>Venue</th><th>Score</th></tr>";
 
