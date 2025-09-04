@@ -61,7 +61,8 @@ variable "tenant_id" {
 variable "image_name" {
   type        = string
   description = "Docker image name"
-  default     = "rangersappimage"
+  default     = "rangers-docker-acr.azurecr.io/rangersapp"
+
 }
 
 variable "docker_registry_url" {
