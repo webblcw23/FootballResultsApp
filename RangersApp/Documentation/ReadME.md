@@ -35,7 +35,8 @@ With a welcome page, main results page with clever 'back' buttons to help naviga
 - No secrets in code — credentials handled via Azure DevOps service connections through variables and secret toggle On
 - RBAC enforced for service principals  
 - Terraform state stored securely in Azure Blob Storage  
-- Key Vault integration planned for future secret management  
+- Key Vault mock Secret has been added for 'football-data-api-key' to demonstate Key Vault integreation into YAML pipe and Terraform 
+  
 
 ## Monitoring & Observability  
 - Logging available via Azure Web App diagnostics  

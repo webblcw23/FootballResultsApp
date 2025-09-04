@@ -149,19 +149,84 @@ stages:
                 latest
                 $(Build.BuildId)
 
-  - stage: DeployApp
-    displayName: "🚀 Restart Web App"
+  - stage: DeployToDev
+    displayName: "🚀 Deploy to Dev Environment"
     dependsOn: DockerPush
     jobs:
-      - job: Restart
+      - job: DeployDev
+        displayName: "Deploy to Dev"
         steps:
-          - task: AzureCLI@2
-            displayName: "Restart Rangers Web App"
+          - task: AzureKeyVault@2
+            displayName: 'Get Key From Vault - Dev'
+            inputs:
+              azureSubscription: 'rangers-acr-service-connection'
+              KeyVaultName: 'rangersapp-kv'
+              SecretsFilter: 'acr-password'
+              RunAsPreJob: true
+          - task: AzureWebApp@1
+            displayName: "Deploy to Dev Web App"
             inputs:
               azureSubscription: "rangers-acr-service-connection"
-              scriptType: bash
-              scriptLocation: inlineScript
-              inlineScript: |
-                az webapp restart \
-                --name rangers-webapp \
-                --resource-group rg-rangers-app
+              appType: "webAppLinux"
+              appName: "rangers-webapp-dev"
+              package: "$(System.DefaultWorkingDirectory)/RangersApp"
+              runtimeStack: "DOTNETCORE|8.0"
+
+  - stage: DeployToStaging
+    displayName: "🚦 Deploy to Staging Environment"
+    dependsOn: DeployToDev
+    condition: succeeded()
+    jobs:
+    - deployment: DeployStaging
+      environment: "staging"
+      strategy:
+        runOnce:
+          deploy:
+            steps:
+              - task: AzureKeyVault@2
+                displayName: 'Get Key From Vault - Staging'
+                inputs:
+                  azureSubscription: 'rangers-acr-service-connection'
+                  KeyVaultName: 'rangersapp-kv'
+                  SecretsFilter: 'football-data-api-key'
+                  RunAsPreJob: true
+
+              - task: AzureWebApp@1
+                displayName: "Deploy to Staging Web App"
+                inputs:
+                  azureSubscription: "rangers-acr-service-connection"
+                  appType: "webAppLinux"
+                  appName: "rangers-webapp-staging"
+                  package: "$(System.DefaultWorkingDirectory)/RangersApp"
+                  runtimeStack: "DOTNETCORE|8.0"
+
+  - stage: DeployToProd
+    displayName: "✅ Deploy to Production"
+    dependsOn: DeployToStaging
+    condition: succeeded()
+    jobs:
+    - deployment: DeployProd
+      environment: "production"
+      strategy:
+        runOnce:
+          deploy:
+            steps:
+              - task: AzureKeyVault@2
+                displayName: 'Get Key From Vault - Prod'
+                inputs:
+                  azureSubscription: 'rangers-acr-service-connection'
+                  KeyVaultName: 'rangersapp-kv'
+                  SecretsFilter: 'acr-password'
+                  RunAsPreJob: true
+
+              - task: AzureWebApp@1
+                displayName: "Deploy to Production Web App"
+                inputs:
+                  azureSubscription: "rangers-acr-service-connection"
+                  appType: "webAppLinux"
+                  appName: "rangers-webapp-prod"
+                  package: "$(System.DefaultWorkingDirectory)/RangersApp"
+                  runtimeStack: "DOTNETCORE|8.0"
+
+
+

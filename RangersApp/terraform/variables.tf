@@ -56,3 +56,20 @@ variable "tenant_id" {
   type        = string
   description = "Azure Tenant ID"
 }
+
+variable "devops_sp_object_id" {
+  type        = string
+  description = "Object ID of the Azure DevOps Service Principal"
+}
+
+variable "acr_password" {
+  type        = string
+  description = "Password for the Azure Container Registry"
+  sensitive   = true
+}
+
+variable "image_name" {
+  type        = string
+  description = "Docker image name"
+  default     = "rangersappimage"
+}
