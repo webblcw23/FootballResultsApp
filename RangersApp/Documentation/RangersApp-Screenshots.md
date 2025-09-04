@@ -4,7 +4,7 @@
 # Rangers Results Page (as of 2nd Septmeber)
 <img width="2816" height="1054" alt="image" src="https://github.com/user-attachments/assets/b8ec6aa1-8482-4e36-bdf3-2ea0c9271e4a" />
 
-# Azure DevOps YAML pipeline with multi stages with Approval Gates for Staging and Production Envs
+# Azure DevOps YAML pipeline to auto update results. Multi-Stages with Approval Gates for Staging and Prod Envs
 <img width="1859" height="757" alt="Screenshot 2025-09-04 at 05 35 43" src="https://github.com/user-attachments/assets/e32f59e8-71fa-4ee4-8120-282e497635f1" />
 
 # Resource Group Container with all relevant resources
