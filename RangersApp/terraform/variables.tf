@@ -57,10 +57,6 @@ variable "tenant_id" {
   description = "Azure Tenant ID"
 }
 
-variable "devops_sp_object_id" {
-  type        = string
-  description = "Object ID of the Azure DevOps Service Principal"
-}
 
 variable "image_name" {
   type        = string
