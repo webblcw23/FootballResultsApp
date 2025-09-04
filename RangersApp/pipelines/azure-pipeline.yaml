@@ -159,14 +159,14 @@ stages:
           - task: AzureKeyVault@2
             displayName: 'Get Key From Vault - Dev'
             inputs:
-              azureSubscription: 'rangers-acr-service-connection'
+              azureSubscription: 'rangers-arm-service-connection'
               KeyVaultName: 'rangersapp-kv'
-              SecretsFilter: 'acr-password'
+              SecretsFilter: 'football-data-api-key'
               RunAsPreJob: true
           - task: AzureWebApp@1
             displayName: "Deploy to Dev Web App"
             inputs:
-              azureSubscription: "rangers-acr-service-connection"
+              azureSubscription: "rangers-arm-service-connection"
               appType: "webAppLinux"
               appName: "rangers-webapp-dev"
               package: "$(System.DefaultWorkingDirectory)/RangersApp"
@@ -186,7 +186,7 @@ stages:
               - task: AzureKeyVault@2
                 displayName: 'Get Key From Vault - Staging'
                 inputs:
-                  azureSubscription: 'rangers-acr-service-connection'
+                  azureSubscription: 'rangers-arm-service-connection'
                   KeyVaultName: 'rangersapp-kv'
                   SecretsFilter: 'football-data-api-key'
                   RunAsPreJob: true
@@ -194,7 +194,7 @@ stages:
               - task: AzureWebApp@1
                 displayName: "Deploy to Staging Web App"
                 inputs:
-                  azureSubscription: "rangers-acr-service-connection"
+                  azureSubscription: "rangers-arm-service-connection"
                   appType: "webAppLinux"
                   appName: "rangers-webapp-staging"
                   package: "$(System.DefaultWorkingDirectory)/RangersApp"
@@ -214,15 +214,15 @@ stages:
               - task: AzureKeyVault@2
                 displayName: 'Get Key From Vault - Prod'
                 inputs:
-                  azureSubscription: 'rangers-acr-service-connection'
+                  azureSubscription: 'rangers-arm-service-connection'
                   KeyVaultName: 'rangersapp-kv'
-                  SecretsFilter: 'acr-password'
+                  SecretsFilter: 'football-data-api-key'
                   RunAsPreJob: true
 
               - task: AzureWebApp@1
                 displayName: "Deploy to Production Web App"
                 inputs:
-                  azureSubscription: "rangers-acr-service-connection"
+                  azureSubscription: "rangers-arm-service-connection"
                   appType: "webAppLinux"
                   appName: "rangers-webapp-prod"
                   package: "$(System.DefaultWorkingDirectory)/RangersApp"
