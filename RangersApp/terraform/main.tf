@@ -47,16 +47,8 @@ resource "azurerm_storage_container" "tfstate" {
   container_access_type = "private"
 }
 
-# Azure container registry
-resource "azurerm_container_registry" "acr" {
-  name                = var.acr_name
-  resource_group_name = var.resource_group_name
-  location            = var.location
-  sku                 = "Basic"
-  admin_enabled       = true
-  admin_username      = "rangersacradmin"
-  admin_password      = var.acr_password
-}
+# Azure container registry was here but it's going to be portal managed as part of a pre-req
+
 
 # Azure Key Vault
 resource "azurerm_key_vault" "kv" {
@@ -64,7 +56,7 @@ resource "azurerm_key_vault" "kv" {
   location                 = azurerm_resource_group.rg.location
   resource_group_name      = azurerm_resource_group.rg.name
   tenant_id                = var.tenant_id
-  sku_name                 = "basic"
+  sku_name                 = "standard"
   purge_protection_enabled = false
 
   access_policy {
@@ -95,27 +87,6 @@ resource "azurerm_service_plan" "asp" {
   os_type             = "Linux"
 }
 
-# Azure Linux Web App
-
-resource "azurerm_linux_web_app" "app" {
-  name                = "rangers-webapp"
-  resource_group_name = azurerm_resource_group.rg.name
-  location            = azurerm_resource_group.rg.location
-  service_plan_id     = azurerm_service_plan.asp.id
-
-  site_config {
-    application_stack {
-      docker_image_name        = "rangersapp:latest" # Just the repo + tag
-      docker_registry_url      = "https://${azurerm_container_registry.acr.login_server}"
-      docker_registry_username = azurerm_container_registry.acr.admin_username
-      docker_registry_password = azurerm_container_registry.acr.admin_password
-    }
-  }
-
-  app_settings = {
-    "WEBSITES_PORT" = "80"
-  }
-}
 
 ##### # Creating 3 separate envs for the web app - Dev, Test, Prod ######
 
@@ -128,10 +99,8 @@ resource "azurerm_linux_web_app" "dev" {
 
   site_config {
     application_stack {
-      docker_image_name        = "${var.image_name}:latest"
-      docker_registry_url      = "https://${azurerm_container_registry.acr.login_server}"
-      docker_registry_username = azurerm_container_registry.acr.admin_username
-      docker_registry_password = azurerm_container_registry.acr.admin_password
+      docker_image_name   = "${var.image_name}:latest"
+      docker_registry_url = "https://${azurerm_container_registry.acr.login_server}"
     }
   }
 
@@ -149,10 +118,8 @@ resource "azurerm_linux_web_app" "staging" {
 
   site_config {
     application_stack {
-      docker_image_name        = "${var.image_name}:latest"
-      docker_registry_url      = "https://${azurerm_container_registry.acr.login_server}"
-      docker_registry_username = azurerm_container_registry.acr.admin_username
-      docker_registry_password = azurerm_container_registry.acr.admin_password
+      docker_image_name   = "${var.image_name}:latest"
+      docker_registry_url = "https://${azurerm_container_registry.acr.login_server}"
     }
   }
 
@@ -170,10 +137,8 @@ resource "azurerm_linux_web_app" "prod" {
 
   site_config {
     application_stack {
-      docker_image_name        = "${var.image_name}:latest"
-      docker_registry_url      = "https://${azurerm_container_registry.acr.login_server}"
-      docker_registry_username = azurerm_container_registry.acr.admin_username
-      docker_registry_password = azurerm_container_registry.acr.admin_password
+      docker_image_name   = "${var.image_name}:latest"
+      docker_registry_url = "https://${azurerm_container_registry.acr.login_server}"
     }
   }
 
