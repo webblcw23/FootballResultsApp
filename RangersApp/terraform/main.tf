@@ -113,7 +113,7 @@ resource "azurerm_linux_web_app" "dev" {
   site_config {
     application_stack {
       docker_image_name   = "${var.image_name}:latest"
-      docker_registry_url = "https://${azurerm_container_registry.acr.login_server}"
+      docker_registry_url = var.docker_registry_url
     }
   }
 
@@ -136,7 +136,7 @@ resource "azurerm_linux_web_app" "staging" {
   site_config {
     application_stack {
       docker_image_name   = "${var.image_name}:latest"
-      docker_registry_url = "https://${azurerm_container_registry.acr.login_server}"
+      docker_registry_url = var.docker_registry_url
     }
   }
 
@@ -159,7 +159,7 @@ resource "azurerm_linux_web_app" "prod" {
   site_config {
     application_stack {
       docker_image_name   = "${var.image_name}:latest"
-      docker_registry_url = "https://${azurerm_container_registry.acr.login_server}"
+      docker_registry_url = var.docker_registry_url
     }
   }
 

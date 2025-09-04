@@ -23,16 +23,16 @@ variable "acr_name" {
 
 #app service plan name
 variable "app_service_plan_name" {
-    description = "The name of the App Service Plan."
-    type        = string
-    default     = "rangers-asp"
+  description = "The name of the App Service Plan."
+  type        = string
+  default     = "rangers-asp"
 }
 
 #web app name
 variable "web_app_name" {
-    description = "The name of the Web App."
-    type        = string
-    default     = "rangers-webapp"
+  description = "The name of the Web App."
+  type        = string
+  default     = "rangers-webapp"
 }
 
 # variables.tf
@@ -72,4 +72,11 @@ variable "image_name" {
   type        = string
   description = "Docker image name"
   default     = "rangersappimage"
+}
+
+variable "docker_registry_url" {
+  type        = string
+  description = "Docker registry URL"
+  default     = "rangersdockeracr.azurecr.io"
+
 }
