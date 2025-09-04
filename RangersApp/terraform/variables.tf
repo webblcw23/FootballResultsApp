@@ -62,12 +62,6 @@ variable "devops_sp_object_id" {
   description = "Object ID of the Azure DevOps Service Principal"
 }
 
-variable "acr_password" {
-  type        = string
-  description = "Password for the Azure Container Registry"
-  sensitive   = true
-}
-
 variable "image_name" {
   type        = string
   description = "Docker image name"
