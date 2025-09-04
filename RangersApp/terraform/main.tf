@@ -67,15 +67,6 @@ resource "azurerm_key_vault" "kv" {
   tenant_id                = var.tenant_id
   sku_name                 = "standard"
   purge_protection_enabled = false
-
-  access_policy {
-    tenant_id = var.tenant_id
-    object_id = var.devops_sp_object_id # Azure DevOps service principal
-    secret_permissions = [
-      "get",
-      "list"
-    ]
-  }
 }
 
 # Storing a mock API key in Key Vault as a secret to demonstrate Key Vault usage and knowledge
