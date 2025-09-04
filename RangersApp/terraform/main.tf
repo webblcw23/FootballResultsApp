@@ -28,7 +28,7 @@ terraform {
 # Resource Group
 resource "azurerm_resource_group" "rg" {
   name     = var.resource_group_name
-   location = var.location
+  location = var.location
 }
 
 # Storage Account for Terraform State
@@ -51,25 +51,25 @@ resource "azurerm_storage_container" "tfstate" {
 resource "azurerm_container_registry" "acr" {
   name                = var.acr_name
   resource_group_name = var.resource_group_name
-   location            = var.location
+  location            = var.location
   sku                 = "Basic"
-   admin_enabled       = true
-   admin_username      = "rangersacradmin"
-   admin_password      = var.acr_password
+  admin_enabled       = true
+  admin_username      = "rangersacradmin"
+  admin_password      = var.acr_password
 }
 
 # Azure Key Vault
 resource "azurerm_key_vault" "kv" {
-  name                        = "rangersapp-kv"
-  location                    = azurerm_resource_group.rg.location
-  resource_group_name         = azurerm_resource_group.rg.name
-  tenant_id                   = var.tenant_id
-  sku_name                    = "basic"
-  purge_protection_enabled    = false
+  name                     = "rangersapp-kv"
+  location                 = azurerm_resource_group.rg.location
+  resource_group_name      = azurerm_resource_group.rg.name
+  tenant_id                = var.tenant_id
+  sku_name                 = "basic"
+  purge_protection_enabled = false
 
   access_policy {
     tenant_id = var.tenant_id
-    object_id = var.devops_sp_object_id  # Azure DevOps service principal
+    object_id = var.devops_sp_object_id # Azure DevOps service principal
     secret_permissions = [
       "get",
       "list"
@@ -91,9 +91,9 @@ resource "azurerm_service_plan" "asp" {
   name                = var.app_service_plan_name
   location            = var.location
   resource_group_name = var.resource_group_name
-    sku_name = "B1" 
-    os_type = "Linux"
-  }
+  sku_name            = "B1"
+  os_type             = "Linux"
+}
 
 # Azure Linux Web App
 
@@ -105,7 +105,7 @@ resource "azurerm_linux_web_app" "app" {
 
   site_config {
     application_stack {
-      docker_image_name        = "rangersapp:latest"  # Just the repo + tag
+      docker_image_name        = "rangersapp:latest" # Just the repo + tag
       docker_registry_url      = "https://${azurerm_container_registry.acr.login_server}"
       docker_registry_username = azurerm_container_registry.acr.admin_username
       docker_registry_password = azurerm_container_registry.acr.admin_password
@@ -184,12 +184,6 @@ resource "azurerm_linux_web_app" "prod" {
 
 
 #########
-
-
-output "acr_login_server" {
-  value = azurerm_container_registry.acr.login_server
-}
-
 
 
 # Ensure the backend configuration is set up correctly before running Terraform commands
