@@ -3,7 +3,9 @@ var builder = WebApplication.CreateBuilder(args);
 // Register controllers
 builder.Services.AddControllers();
 builder.Services.AddHttpClient();
-builder.WebHost.UseUrls("http://*:80");
+var port = Environment.GetEnvironmentVariable("PORT") ?? "80";
+builder.WebHost.UseUrls($"http://*:{port}");
+
 
 
 
@@ -38,7 +40,7 @@ app.MapGet("/", () =>
         <a href='/api/results/html'>View Results</a>
     </body>
     </html>";
-    
+
     return Results.Content(html, "text/html");
 });
 
