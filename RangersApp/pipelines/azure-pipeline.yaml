@@ -163,14 +163,6 @@ stages:
               KeyVaultName: 'rangersapp-kv'
               SecretsFilter: 'football-data-api-key'
               RunAsPreJob: true
-          - task: AzureWebApp@1
-            displayName: "Deploy to Dev Web App"
-            inputs:
-              azureSubscription: "rangers-arm-service-connection"
-              appType: "webAppLinux"
-              appName: "rangers-webapp-dev"
-              package: "$(System.DefaultWorkingDirectory)/RangersApp"
-              runtimeStack: "DOTNETCORE|8.0"
 
   - stage: DeployToStaging
     displayName: "🚦 Deploy to Staging Environment"
@@ -191,15 +183,6 @@ stages:
                   SecretsFilter: 'football-data-api-key'
                   RunAsPreJob: true
 
-              - task: AzureWebApp@1
-                displayName: "Deploy to Staging Web App"
-                inputs:
-                  azureSubscription: "rangers-arm-service-connection"
-                  appType: "webAppLinux"
-                  appName: "rangers-webapp-staging"
-                  package: "$(System.DefaultWorkingDirectory)/RangersApp"
-                  runtimeStack: "DOTNETCORE|8.0"
-
   - stage: DeployToProd
     displayName: "✅ Deploy to Production"
     dependsOn: DeployToStaging
@@ -218,15 +201,3 @@ stages:
                   KeyVaultName: 'rangersapp-kv'
                   SecretsFilter: 'football-data-api-key'
                   RunAsPreJob: true
-
-              - task: AzureWebApp@1
-                displayName: "Deploy to Production Web App"
-                inputs:
-                  azureSubscription: "rangers-arm-service-connection"
-                  appType: "webAppLinux"
-                  appName: "rangers-webapp-prod"
-                  package: "$(System.DefaultWorkingDirectory)/RangersApp"
-                  runtimeStack: "DOTNETCORE|8.0"
-
-
-
