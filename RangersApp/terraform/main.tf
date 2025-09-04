@@ -47,7 +47,16 @@ resource "azurerm_storage_container" "tfstate" {
   container_access_type = "private"
 }
 
-# Azure container registry was here but it's going to be portal managed as part of a pre-req
+# Azure container registry
+#resource "azurerm_container_registry" "acr" {
+#  name                = var.acr_name
+#  resource_group_name = azurerm_resource_group.rg.name
+#  location            = azurerm_resource_group.rg.location
+#  sku                 = "Basic"
+#  admin_enabled       = true
+#  admin_username      = "rangersacradmin"
+#  admin_password      = var.acr_password
+#}
 
 
 # Azure Key Vault
@@ -97,6 +106,10 @@ resource "azurerm_linux_web_app" "dev" {
   location            = azurerm_resource_group.rg.location
   service_plan_id     = azurerm_service_plan.asp.id
 
+  identity {
+    type = "SystemAssigned"
+  }
+
   site_config {
     application_stack {
       docker_image_name   = "${var.image_name}:latest"
@@ -116,6 +129,10 @@ resource "azurerm_linux_web_app" "staging" {
   location            = azurerm_resource_group.rg.location
   service_plan_id     = azurerm_service_plan.asp.id
 
+  identity {
+    type = "SystemAssigned"
+  }
+
   site_config {
     application_stack {
       docker_image_name   = "${var.image_name}:latest"
@@ -134,6 +151,10 @@ resource "azurerm_linux_web_app" "prod" {
   resource_group_name = azurerm_resource_group.rg.name
   location            = azurerm_resource_group.rg.location
   service_plan_id     = azurerm_service_plan.asp.id
+
+  identity {
+    type = "SystemAssigned"
+  }
 
   site_config {
     application_stack {
