@@ -44,9 +44,7 @@ With a welcome page, main results page with clever 'back' buttons to help naviga
 - Alerting and uptime tracking on the roadmap  
 
 
-## Local Development  
-#- bash
-# Run scraper
+# Run scraper cmd for local run 
 python3 Data/scrape_scores.py
 
 # Build and run locally
