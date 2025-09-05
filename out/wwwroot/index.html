@@ -1,0 +1,79 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <title>Rangers fixtures & results</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <style>
+    :root { color-scheme: light dark; --blue:#1e3a8a; --light:#f1f5f9; --muted:#64748b; }
+    body { font-family: system-ui, Segoe UI, Roboto, Arial, sans-serif; margin:0; background:#0b1220; color:#e5e7eb; }
+    header { padding:16px 20px; background:linear-gradient(90deg, #0b1220, #142246); border-bottom:1px solid #243040; }
+    h1 { margin:0; font-size:1.25rem; letter-spacing:0.2px; }
+    main { max-width:900px; margin:0 auto; padding:20px; }
+    .grid { display:grid; grid-template-columns: repeat(auto-fit, minmax(280px, 1fr)); gap:12px; }
+    .card { border:1px solid #25324a; border-radius:10px; padding:12px 14px; background:#0f172a; }
+    .title { font-weight:600; }
+    .meta { color:#93a3b8; font-size:0.9rem; margin-top:4px; }
+    .badge { display:inline-block; padding:2px 8px; border-radius:999px; font-size:0.75rem; background:#1e293b; color:#cbd5e1; }
+    .row { display:flex; align-items:center; justify-content:space-between; gap:8px; margin-top:8px; }
+    .score { font-weight:700; color:#e2e8f0; }
+    .muted { color:#94a3b8; }
+    .section-title { margin:18px 0 10px; color:#cbd5e1; font-weight:600; }
+    footer { text-align:center; color:#7c8aa5; font-size:0.85rem; padding:16px 0 28px; }
+  </style>
+</head>
+<body>
+  <header><h1>Rangers — Fixtures & Results</h1></header>
+  <main>
+    <div class="section-title">Upcoming fixtures</div>
+    <div id="fixtures" class="grid"></div>
+
+    <div class="section-title">Recent results</div>
+    <div id="results" class="grid"></div>
+
+    <footer>Data refreshed from BBC Sport feed. Times shown in UK time.</footer>
+  </main>
+
+  <script>
+    const fmt = (iso) => new Date(iso + "Z").toLocaleString("en-GB", {
+      weekday: "short", day: "2-digit", month: "short", hour: "2-digit", minute: "2-digit",
+      timeZone: "Europe/London", hour12: false
+    });
+
+    const cardHtml = (item) => `
+      <div class="card">
+        <div class="row">
+          <div class="title">${item.homeTeam} vs ${item.awayTeam}</div>
+          <span class="badge">${item.venue}</span>
+        </div>
+        <div class="row">
+          <div class="meta">${fmt(item.kickoffUtc)}</div>
+          ${item.isResult ? `<div class="score">${item.score ?? ""}</div>` : `<div class="muted">KO</div>`}
+        </div>
+      </div>`;
+
+    async function load() {
+      try {
+        const res = await fetch('/api/fixtures', { cache: 'no-store' });
+        const all = await res.json();
+
+        const now = new Date();
+        const upcoming = all.filter(x => !x.isResult && new Date(x.kickoffUtc + "Z") >= now).slice(0, 12);
+        const results  = all.filter(x => x.isResult && new Date(x.kickoffUtc + "Z") <= now).slice(-12).reverse();
+
+        document.getElementById('fixtures').innerHTML = upcoming.map(cardHtml).join('');
+        document.getElementById('results').innerHTML  = results.map(cardHtml).join('');
+
+        if (!upcoming.length) document.getElementById('fixtures').innerHTML = '<div class="muted">No upcoming fixtures found.</div>';
+        if (!results.length)  document.getElementById('results').innerHTML  = '<div class="muted">No recent results found.</div>';
+      } catch (e) {
+        document.getElementById('fixtures').innerHTML = '<div class="muted">Failed to load feed.</div>';
+        document.getElementById('results').innerHTML  = '';
+        console.error(e);
+      }
+    }
+
+    load();
+  </script>
+</body>
+</html>

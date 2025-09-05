@@ -1,0 +1,188 @@
+trigger: none
+
+pool:
+  vmImage: "ubuntu-latest"
+
+variables:
+  ACR_NAME: "rangers-docker-acr"
+  IMAGE_NAME: "rangersapp"
+  DOCKER_IMAGE: "$(ACR_NAME).azurecr.io/$(IMAGE_NAME):latest"
+
+stages:
+  - stage: BuildAndScrape
+    displayName: "⚙️ Build App & Scrape Data"
+    jobs:
+      - job: BuildScrape
+        steps:
+          - task: DotNetCoreCLI@2
+            displayName: "Restore RangersApp"
+            inputs:
+              command: "restore"
+              projects: "RangersApp/Rangers.Web.csproj"
+
+          - task: DotNetCoreCLI@2
+            displayName: "Build RangersApp"
+            inputs:
+              command: "build"
+              projects: "RangersApp/Rangers.Web.csproj"
+              arguments: "--configuration Release"
+
+          - task: DotNetCoreCLI@2
+            displayName: "Test RangersApp"
+            inputs:
+              command: "test"
+              projects: "RangersApp/Rangers.Web.csproj"
+
+          - task: UsePythonVersion@0
+            displayName: "Set Python Version"
+            inputs:
+              versionSpec: "3.10"
+              addToPath: true
+
+          - script: |
+              python -m venv venv
+              source venv/bin/activate
+              pip install pandas
+              python Data/scrape_scores.py
+            workingDirectory: "RangersApp"
+            displayName: "Run Python Script to Scrape Scores"
+
+          - task: PublishBuildArtifacts@1
+            inputs:
+              pathToPublish: "RangersApp/Data/rangers-results.json"
+              artifactName: "rangers-results"
+            displayName: "Publish Results JSON"
+
+  - stage: DockerPush
+    displayName: "🐳 Build & Push Docker Image"
+    dependsOn: BuildAndScrape
+    jobs:
+      - job: DockerBuild
+        steps:
+          - task: DownloadBuildArtifacts@0
+            displayName: "Download Results Artifact"
+            inputs:
+              buildType: 'current'
+              downloadPath: 'RangersApp/Data'
+              artifactName: 'rangers-results'
+
+          - script: mv RangersApp/Data/rangers-results/rangers-results.json RangersApp/Data/rangers-results.json
+            displayName: "Move JSON to Expected Path"
+
+          - script: cat RangersApp/Data/rangers-results.json
+            displayName: "Verify JSON After Move"
+
+          - task: Docker@2
+            displayName: "Build and Push Docker Image"
+            inputs:
+              containerRegistry: "rangers-docker-acr"
+              repository: "$(IMAGE_NAME)"
+              command: "buildAndPush"
+              Dockerfile: "RangersApp/Dockerfile"
+              buildContext: "RangersApp"
+              tags: |
+                latest
+                $(Build.BuildId)
+
+  - stage: TerraformInfra
+    displayName: "🔧 Provision Infrastructure"
+    dependsOn: DockerPush
+    jobs:
+      - job: Terraform
+        steps:
+          - task: TerraformInstaller@1
+            inputs:
+              terraformVersion: "1.7.5"
+
+          - script: terraform init -reconfigure
+            workingDirectory: "RangersApp/terraform"
+            env:
+              ARM_CLIENT_ID: $(ARM_CLIENT_ID)
+              ARM_CLIENT_SECRET: $(ARM_CLIENT_SECRET)
+              ARM_TENANT_ID: $(ARM_TENANT_ID)
+              ARM_SUBSCRIPTION_ID: $(ARM_SUBSCRIPTION_ID)
+            displayName: "Terraform Init"
+
+          - script: terraform validate
+            workingDirectory: "RangersApp/terraform"
+            displayName: "Terraform Validate"
+
+          - script: |
+              terraform plan \
+                -out=tfplan.out \
+                -var="client_id=$(ARM_CLIENT_ID)" \
+                -var="client_secret=$(ARM_CLIENT_SECRET)" \
+                -var="subscription_id=$(ARM_SUBSCRIPTION_ID)" \
+                -var="tenant_id=$(ARM_TENANT_ID)"
+            workingDirectory: "RangersApp/terraform"
+            env:
+              ARM_CLIENT_ID: $(ARM_CLIENT_ID)
+              ARM_CLIENT_SECRET: $(ARM_CLIENT_SECRET)
+              ARM_TENANT_ID: $(ARM_TENANT_ID)
+              ARM_SUBSCRIPTION_ID: $(ARM_SUBSCRIPTION_ID)
+            displayName: "Terraform Plan"
+
+          - publish: RangersApp/terraform/tfplan.out
+            artifact: terraform-plan
+            displayName: "Publish Terraform Plan"
+
+          - script: terraform apply -auto-approve tfplan.out
+            workingDirectory: "RangersApp/terraform"
+            env:
+              ARM_CLIENT_ID: $(ARM_CLIENT_ID)
+              ARM_CLIENT_SECRET: $(ARM_CLIENT_SECRET)
+              ARM_TENANT_ID: $(ARM_TENANT_ID)
+              ARM_SUBSCRIPTION_ID: $(ARM_SUBSCRIPTION_ID)
+            displayName: "Terraform Apply"
+
+  - stage: DeployToDev
+    displayName: "🚀 Inject Secrets to Dev"
+    dependsOn: TerraformInfra
+    jobs:
+      - job: DeployDev
+        steps:
+          - task: AzureKeyVault@2
+            displayName: 'Get Key From Vault - Dev'
+            inputs:
+              azureSubscription: 'rangers-arm-service-connection'
+              KeyVaultName: 'rangersapp-kv'
+              SecretsFilter: 'football-data-api-key'
+              RunAsPreJob: true
+
+  - stage: DeployToStaging
+    displayName: "🚦 Inject Secrets to Staging"
+    dependsOn: DeployToDev
+    condition: succeeded()
+    jobs:
+      - deployment: DeployStaging
+        environment: "staging"
+        strategy:
+          runOnce:
+            deploy:
+              steps:
+                - task: AzureKeyVault@2
+                  displayName: 'Get Key From Vault - Staging'
+                  inputs:
+                    azureSubscription: 'rangers-arm-service-connection'
+                    KeyVaultName: 'rangersapp-kv'
+                    SecretsFilter: 'football-data-api-key'
+                    RunAsPreJob: true
+
+  - stage: DeployToProd
+    displayName: "✅ Inject Secrets to Production"
+    dependsOn: DeployToStaging
+    condition: succeeded()
+    jobs:
+      - deployment: DeployProd
+        environment: "production"
+        strategy:
+          runOnce:
+            deploy:
+              steps:
+                - task: AzureKeyVault@2
+                  displayName: 'Get Key From Vault - Prod'
+                  inputs:
+                    azureSubscription: 'rangers-arm-service-connection'
+                    KeyVaultName: 'rangersapp-kv'
+                    SecretsFilter: 'football-data-api-key'
+                    RunAsPreJob: true
