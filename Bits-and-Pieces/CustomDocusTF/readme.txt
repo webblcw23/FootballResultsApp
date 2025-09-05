@@ -1,1 +1,0 @@
-A simple Networking with multiple VNet, Subenets, Peerings and VM's through Terraform Documentation only.
