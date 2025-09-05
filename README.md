@@ -56,16 +56,16 @@ docker run -p 5050:80 rangersapp:local
 
 ----- Kubernetes extra ------
 # Adding a Local Test for Kubernetes via MiniKube
-Esnure Minikube is running 
+# Esnure Minikube is running 
 minikube start
-Build image via docker
+# Build image via docker
 docker build -t rangersapp:local .  
-Push Docker Image to Minikube
+# Push Docker Image to Minikube
 minikube image load rangersapp:local
-Then create the deployment and service using:
+# Then create the deployment and service using:
 kubectl apply -f k8s/deployment.yaml
 kubectl apply -f k8s/service.yaml
-Manually forwarding the port using:
+# Manually forwarding the port using:
 kubectl port-forward svc/rangersapp-service 8080:80
 # Open URL
 http://localhost:8080/
