@@ -7,6 +7,7 @@ provider "azurerm" {
 
 }
 
+
 resource "azurerm_resource_group" "rangers_rg_core" {
   name     = "rg-rangers-core"
   location = "UK South"
@@ -23,6 +24,8 @@ resource "azurerm_container_registry" "rangers_acr" {
     project = "rangersapp"
   }
 }
+
+
 
 
 ## Remember to push the docker image to ACR after building it locally
