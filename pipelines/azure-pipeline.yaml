@@ -108,6 +108,11 @@ stages:
               -var="image_tag=$(IMAGE_TAG_DEV)"
             workingDirectory: "terraform/dev"
             displayName: "Terraform Apply"
+            env:
+              ARM_CLIENT_ID: $(ARM_CLIENT_ID)
+              ARM_CLIENT_SECRET: $(ARM_CLIENT_SECRET)
+              ARM_SUBSCRIPTION_ID: $(ARM_SUBSCRIPTION_ID)
+              ARM_TENANT_ID: $(ARM_TENANT_ID)
 
           - task: AzureCLI@2
             displayName: "Restart Dev Web App"
@@ -155,6 +160,11 @@ stages:
               -var="image_tag=$(IMAGE_TAG_STAGING)"
             workingDirectory: "terraform/staging"
             displayName: "Terraform Apply"
+            env:
+              ARM_CLIENT_ID: $(ARM_CLIENT_ID)
+              ARM_CLIENT_SECRET: $(ARM_CLIENT_SECRET)
+              ARM_SUBSCRIPTION_ID: $(ARM_SUBSCRIPTION_ID)
+              ARM_TENANT_ID: $(ARM_TENANT_ID)
 
           - task: AzureCLI@2
             displayName: "Restart Staging Web App"
@@ -201,6 +211,11 @@ stages:
               -var="image_tag=$(IMAGE_TAG_PROD)"
             workingDirectory: "terraform/prod"
             displayName: "Terraform Apply"
+            env:
+              ARM_CLIENT_ID: $(ARM_CLIENT_ID)
+              ARM_CLIENT_SECRET: $(ARM_CLIENT_SECRET)
+              ARM_SUBSCRIPTION_ID: $(ARM_SUBSCRIPTION_ID)
+              ARM_TENANT_ID: $(ARM_TENANT_ID)
 
           - task: AzureCLI@2
             displayName: "Restart Prod Web App"
