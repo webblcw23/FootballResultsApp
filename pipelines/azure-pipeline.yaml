@@ -40,7 +40,7 @@ stages:
 
           - task: PublishBuildArtifacts@1
             inputs:
-              pathToPublish: "RangersApp/Data/rangers-results.json"
+              pathToPublish: "Data/rangers-results.json"
               artifactName: "rangers-results"
             displayName: "Publish Results JSON"
 
@@ -54,9 +54,9 @@ stages:
           - task: DownloadBuildArtifacts@0
             inputs:
               artifactName: "rangers-results"
-              downloadPath: "RangersApp/Data"
+              downloadPath: "Data"
 
-          - script: mv RangersApp/Data/rangers-results/rangers-results.json RangersApp/Data/rangers-results.json
+          - script: mv Data/rangers-results/rangers-results.json Data/rangers-results.json
             displayName: "Move JSON to Expected Path"
 
           - task: Docker@2
@@ -65,7 +65,7 @@ stages:
               containerRegistry: "rangers-docker-acr"
               repository: "$(IMAGE_NAME)"
               command: "buildAndPush"
-              Dockerfile: "RangersApp/Dockerfile"
+              Dockerfile: "Dockerfile"
               buildContext: "RangersApp"
               tags: |
                 $(IMAGE_TAG_DEV)
@@ -83,11 +83,11 @@ stages:
               terraformVersion: "1.7.5"
 
           - script: terraform init -reconfigure
-            workingDirectory: "RangersApp/terraform/dev"
+            workingDirectory: "terraform/dev"
 
           - script: terraform apply -auto-approve \
               -var="image_tag=$(IMAGE_TAG_DEV)"
-            workingDirectory: "RangersApp/terraform/dev"
+            workingDirectory: "terraform/dev"
 
           - task: AzureCLI@2
             displayName: "Restart Dev Web App"
@@ -110,11 +110,11 @@ stages:
               terraformVersion: "1.7.5"
 
           - script: terraform init -reconfigure
-            workingDirectory: "RangersApp/terraform/staging"
+            workingDirectory: "terraform/staging"
 
           - script: terraform apply -auto-approve \
               -var="image_tag=$(IMAGE_TAG_STAGING)"
-            workingDirectory: "RangersApp/terraform/staging"
+            workingDirectory: "terraform/staging"
 
           - task: AzureCLI@2
             displayName: "Restart Staging Web App"
@@ -137,11 +137,11 @@ stages:
               terraformVersion: "1.7.5"
 
           - script: terraform init -reconfigure
-            workingDirectory: "RangersApp/terraform/prod"
+            workingDirectory: "terraform/prod"
 
           - script: terraform apply -auto-approve \
               -var="image_tag=$(IMAGE_TAG_PROD)"
-            workingDirectory: "RangersApp/terraform/prod"
+            workingDirectory: "terraform/prod"
 
           - task: AzureCLI@2
             displayName: "Restart Prod Web App"
