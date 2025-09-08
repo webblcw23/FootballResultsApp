@@ -1,0 +1,7 @@
+# One command to build and push for multiple environments/architectures. Do this once the acr is created through core terraform
+docker buildx build \
+  --platform linux/amd64 \
+  -t rangersdockeracr.azurecr.io/rangersapp:dev-001 \
+  -t rangersdockeracr.azurecr.io/rangersapp:staging-001 \
+  -t rangersdockeracr.azurecr.io/rangersapp:prod-001 \
+  --push .
