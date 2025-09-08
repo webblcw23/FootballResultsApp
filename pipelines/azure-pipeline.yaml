@@ -120,8 +120,8 @@ stages:
               azureSubscription: "rangers-arm-service-connection"
               scriptType: "bash"
               scriptLocation: "inlineScript"
-              inlineScript: |
-              # az webapp restart --name rangers-webapp-dev --resource-group rg-rangers-dev
+              inlineScript: 
+                az webapp restart --name rangers-webapp-dev --resource-group rg-rangers-dev
 
   - stage: DeployStaging
     displayName: "🚦 Deploy to Staging Environment"
