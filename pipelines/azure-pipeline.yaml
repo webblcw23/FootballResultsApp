@@ -58,11 +58,6 @@ stages:
           - script: mv Data/rangers-results/rangers-results.json Data/rangers-results.json
             displayName: "Move JSON to Expected Path"
 
-          - task: Docker@2
-            displayName: "Build and Push Docker Image"
-            inputs:
-              containerRegistry: "rangers-docker-acr"
-              repository: "$(IMAGE_NAME)"
           - script: |
              docker buildx create --use
               docker buildx build \
