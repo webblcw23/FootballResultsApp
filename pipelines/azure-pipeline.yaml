@@ -82,9 +82,16 @@ stages:
             inputs:
               terraformVersion: "1.7.5"
 
-          - script: terraform init -reconfigure
-            workingDirectory: "terraform/dev"
-            displayName: "Terraform init"
+          - task: AzureCLI@2
+            displayName: "Terraform Init"
+            inputs:
+              azureSubscription: "rangers-arm-service-connection"
+              scriptType: "bash"
+              scriptLocation: "inlineScript"
+              inlineScript: |
+                terraform init -reconfigure
+              workingDirectory: terraform/dev
+
 
           - script: |
               terraform apply -auto-approve \
@@ -95,8 +102,6 @@ stages:
               -var="image_tag=$(IMAGE_TAG_DEV)"
             workingDirectory: "terraform/dev"
             displayName: "Terraform Apply"
-
-
 
           - task: AzureCLI@2
             displayName: "Restart Dev Web App"
@@ -118,9 +123,15 @@ stages:
             inputs:
               terraformVersion: "1.7.5"
 
-          - script: terraform init -reconfigure
-            workingDirectory: "terraform/staging"
-            displayName: "Terraform init"
+          - task: AzureCLI@2
+            displayName: "Terraform Init"
+            inputs:
+              azureSubscription: "rangers-arm-service-connection"
+              scriptType: "bash"
+              scriptLocation: "inlineScript"
+              inlineScript: |
+                terraform init -reconfigure
+              workingDirectory: terraform/staging
 
           - script: |
               terraform apply -auto-approve \
@@ -152,9 +163,15 @@ stages:
             inputs:
               terraformVersion: "1.7.5"
 
-          - script: terraform init -reconfigure
-            workingDirectory: "terraform/prod"
-            displayName: "Terraform init"
+          - task: AzureCLI@2
+            displayName: "Terraform Init"
+            inputs:
+              azureSubscription: "rangers-arm-service-connection"
+              scriptType: "bash"
+              scriptLocation: "inlineScript"
+              inlineScript: |
+                terraform init -reconfigure
+              workingDirectory: terraform/prod
 
           - script: |
               terraform apply -auto-approve \
