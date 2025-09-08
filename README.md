@@ -1,19 +1,36 @@
 # RangersApp ⚽  
-An Azure cloud-native, CI/CD-powered web app that scrapes and serves Rangers FC match results — deployed end-to-end on Azure.
+An Azure cloud-native, CI/CD-powered web app that scrapes and serves Rangers FC match results — deployed end-to-end on Azure with Development, Staging and Production Environments.
 
 ## Overview  
-RangersApp is a fully automated web application that scrapes Rangers FC match results, packages them into a Dockerized .NET frontend, and deploys to Azure via Terraform and Azure DevOps. Built to showcase platform engineering skills, CI/CD automation, and infrastructure-as-code.
-With a welcome page, main results page with clever 'back' buttons to help navigate the app. Simple yet effective.
+RangersApp is a cloud-native, CI/CD-driven web app that turns match data into a production-grade experience — built to showcase secure DevOps, modular infrastructure, and platform ownership
 
 
 ## Architecture and Folder Setup 
 
-[Terraform] → [Azure DevOps Pipeline]
-     └── RG, ACR, Web App, Storage
-          └── Python Scraper → JSON
-               └── Docker Build → ACR Push
-                    └── Azure Web App Deploy
+[Azure DevOps Pipeline Flow]
 
+└── Core Infrastructure (rg-rangers-core)
+    ├── Create ACR (Azure Container Registry)
+    ├── Optional: Provision Storage Account & Key Vault
+    └── Run Python Scraper → Generate latest JSON data
+        └── Docker Build → Push image to ACR (multi-tag: dev/staging/prod)
+
+└── Dev Environment (rg-rangers-dev)
+    ├── Terraform Apply → Provision Web App & resources
+    ├── Tagging system → Pull dev image (e.g. rangersapp:dev-001)
+    └── Web App Restarted → Validate container startup
+
+└── Staging Environment (rg-rangers-staging)
+    ├── Terraform Apply → Provision gated staging infra
+    ├── Tagging system → Pull staging image (e.g. rangersapp:staging-001)
+    └── Web App Restarted → Pre-prod validation
+
+└── Production Environment (rg-rangers-prod)
+    ├── Terraform Apply → Provision gated prod infra
+    ├── Tagging system → Pull prod image (e.g. rangersapp:prod-001)
+    └── Web App Restarted → Live deployment
+
+               
 
 ## Tech Stack  
 - ASP.NET Core (.NET 8)  - Web App creation using C#  
@@ -28,14 +45,30 @@ With a welcome page, main results page with clever 'back' buttons to help naviga
 2. Python script scrapes latest results  
 3. Docker image built with freshly updated JSON  
 4. Image pushed to Azure Container Registry  (ACR)
-5. App deployed to Azure Web App  
-6. Web App restarted to serve new data  
+5. App deployed to Azure Web App for Dev -> Staging (Gated) -> Produciton (Gated)
+6. Web App restarted to serve new data
+
+  ┌────────────┐
+  │  Scraper   │
+  └────┬───────┘
+       ↓
+  ┌────────────┐
+  │  Docker    │
+  └────┬───────┘
+       ↓
+  ┌────────────┐
+  │   ACR      │
+  └────┬───────┘
+       ↓
+┌──────┴───────────────┐
+│ Dev / Staging / Prod │
+└──────────────────────┘
 
 ## Security Practices  
 - No secrets in code — credentials handled via Azure DevOps service connections through variables and secret toggle On
 - RBAC enforced for service principals  
 - Terraform state stored securely in Azure Blob Storage  
-- Key Vault mock Secret has been added for 'football-data-api-key' to demonstate Key Vault integreation into YAML pipe and Terraform 
+- Key Vault mock Secret can been added for 'football-data-api-key' to demonstate Key Vault integreation into YAML pipe and Terraform 
   
 
 ## Monitoring & Observability  
@@ -73,14 +106,12 @@ Local testing completed successfully through dotnet run before testing with Dock
 
 
 ## Planned Enhancements  
-- 🔐 Key Vault Integration  - To Store secret (Variable is fine for now but ideal for best practice)
+- 🔐 Key Vault Integration  - To Store secret (Pipelien Variable used for client secret is fine for now but ideal for best practice)
 - 📈 Monitoring & Alerts  - Web App default alert is on but this can be improved.
 - 🧪 Unit Testing  - Add unit test scripts to ensure working application before deployment.
-- 🚀 Staging Environment  - Currently there is no middle ground before a 'prod' deployment.
-- 🧱 Terraform Modules  - Cleanly organise my IaC using a modular strategy.
 
 
 ## Project Outcome 
-This project demonstrates full-stack platform ownership, real-world CI/CD troubleshooting, infrastructure-as-code usage, and secure cloud deployment. Built with resilience, iteration, and a focus on maintainability.
+This project demonstrates full-stack platform ownership, real-world CI/CD troubleshooting, multiple environments, infrastructure-as-code usage, and secure cloud deployment. Built with resilience, iteration, and a focus on maintainability.
 
 
