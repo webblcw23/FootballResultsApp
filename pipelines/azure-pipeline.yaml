@@ -35,7 +35,6 @@ stages:
               source venv/bin/activate
               pip install pandas
               python Data/scrape_scores.py
-            workingDirectory: "RangersApp"
             displayName: "Scrape Latest Match Results"
 
           - task: PublishBuildArtifacts@1
