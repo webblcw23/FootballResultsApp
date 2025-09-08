@@ -84,10 +84,11 @@ stages:
 
           - script: terraform init -reconfigure
             workingDirectory: "terraform/dev"
+            displayName: "Terraform init"
 
-          - script: terraform apply -auto-approve \
-              -var="image_tag=$(IMAGE_TAG_DEV)"
+          - script: terraform apply -auto-approve -var="image_tag=$(IMAGE_TAG_DEV)"
             workingDirectory: "terraform/dev"
+            displayName: "Terraform Apply"
 
           - task: AzureCLI@2
             displayName: "Restart Dev Web App"
@@ -111,10 +112,11 @@ stages:
 
           - script: terraform init -reconfigure
             workingDirectory: "terraform/staging"
+            displayName: "Terraform init"
 
-          - script: terraform apply -auto-approve \
-              -var="image_tag=$(IMAGE_TAG_STAGING)"
+          - script: terraform apply -auto-approve -var="image_tag=$(IMAGE_TAG_STAGING)"
             workingDirectory: "terraform/staging"
+            displayName: "Terraform apply"
 
           - task: AzureCLI@2
             displayName: "Restart Staging Web App"
@@ -138,10 +140,11 @@ stages:
 
           - script: terraform init -reconfigure
             workingDirectory: "terraform/prod"
+            displayName: "Terraform init"
 
-          - script: terraform apply -auto-approve \
-              -var="image_tag=$(IMAGE_TAG_PROD)"
+          - script: terraform apply -auto-approve -var="image_tag=$(IMAGE_TAG_PROD)"
             workingDirectory: "terraform/prod"
+            displayName: "Terraform apply"
 
           - task: AzureCLI@2
             displayName: "Restart Prod Web App"
