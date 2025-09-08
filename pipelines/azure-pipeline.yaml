@@ -63,13 +63,16 @@ stages:
             inputs:
               containerRegistry: "rangers-docker-acr"
               repository: "$(IMAGE_NAME)"
-              command: "buildAndPush"
-              Dockerfile: "Dockerfile"
-              buildContext: "."
-              tags: |
-                $(IMAGE_TAG_DEV)
-                $(IMAGE_TAG_STAGING)
-                $(IMAGE_TAG_PROD)
+          - script: |
+             docker buildx create --use
+              docker buildx build \
+             --platform linux/amd64 \
+             -t $(DOCKER_REGISTRY)/$(IMAGE_NAME):$(IMAGE_TAG_DEV) \
+              -t $(DOCKER_REGISTRY)/$(IMAGE_NAME):$(IMAGE_TAG_STAGING) \
+              -t $(DOCKER_REGISTRY)/$(IMAGE_NAME):$(IMAGE_TAG_PROD) \
+              --push .
+        displayName: "Build and Push Multi-Tagged Image with Buildx"
+
 
   - stage: DeployDev
     displayName: "🚀 Deploy to Dev Environment"
