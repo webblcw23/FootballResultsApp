@@ -91,6 +91,11 @@ stages:
               inlineScript: |
                 terraform init -reconfigure
               workingDirectory: terraform/dev
+            env:
+              ARM_CLIENT_ID: $(ARM_CLIENT_ID)
+              ARM_CLIENT_SECRET: $(ARM_CLIENT_SECRET)
+              ARM_SUBSCRIPTION_ID: $(ARM_SUBSCRIPTION_ID)
+              ARM_TENANT_ID: $(ARM_TENANT_ID)              
 
 
           - script: |
@@ -102,6 +107,7 @@ stages:
               -var="image_tag=$(IMAGE_TAG_DEV)"
             workingDirectory: "terraform/dev"
             displayName: "Terraform Apply"
+
 
           - task: AzureCLI@2
             displayName: "Restart Dev Web App"
@@ -132,6 +138,12 @@ stages:
               inlineScript: |
                 terraform init -reconfigure
               workingDirectory: terraform/staging
+            env:
+              ARM_CLIENT_ID: $(ARM_CLIENT_ID)
+              ARM_CLIENT_SECRET: $(ARM_CLIENT_SECRET)
+              ARM_SUBSCRIPTION_ID: $(ARM_SUBSCRIPTION_ID)
+              ARM_TENANT_ID: $(ARM_TENANT_ID)
+
 
           - script: |
               terraform apply -auto-approve \
@@ -172,7 +184,12 @@ stages:
               inlineScript: |
                 terraform init -reconfigure
               workingDirectory: terraform/prod
-
+            env:
+              ARM_CLIENT_ID: $(ARM_CLIENT_ID)
+              ARM_CLIENT_SECRET: $(ARM_CLIENT_SECRET)
+              ARM_SUBSCRIPTION_ID: $(ARM_SUBSCRIPTION_ID)
+              ARM_TENANT_ID: $(ARM_TENANT_ID)
+              
           - script: |
               terraform apply -auto-approve \
               -var="client_id=$(ARM_CLIENT_ID)" \
