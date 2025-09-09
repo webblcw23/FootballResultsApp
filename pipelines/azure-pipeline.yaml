@@ -180,50 +180,53 @@ stages:
     dependsOn: DeployStaging
     condition: succeeded()
     jobs:
-    - deployment: TerraformProdGate
-      environment: Production
-    - job: TerraformProd
-      steps:
-          - task: TerraformInstaller@1
-            inputs:
-              terraformVersion: "1.7.5"
+      - deployment: TerraformProdGate
+        environment: Production
+        strategy:
+          runOnce:
+            deploy:
+              steps:
+                - task: TerraformInstaller@1
+                  inputs:
+                    terraformVersion: "1.7.5"
 
-          - task: AzureCLI@2
-            displayName: "Terraform Init"
-            inputs:
-              azureSubscription: "rangers-arm-service-connection"
-              scriptType: "bash"
-              scriptLocation: "inlineScript"
-              inlineScript: |
-                terraform init -reconfigure
-              workingDirectory: terraform/prod
-            env:
-              ARM_CLIENT_ID: $(ARM_CLIENT_ID)
-              ARM_CLIENT_SECRET: $(ARM_CLIENT_SECRET)
-              ARM_SUBSCRIPTION_ID: $(ARM_SUBSCRIPTION_ID)
-              ARM_TENANT_ID: $(ARM_TENANT_ID)
-              
-          - script: |
-              echo "Client ID: $(ARM_CLIENT_ID)"
-              terraform apply -auto-approve \
-              -var="client_id=$(ARM_CLIENT_ID)" \
-              -var="client_secret=$(ARM_CLIENT_SECRET)" \
-              -var="tenant_id=$(ARM_TENANT_ID)" \
-              -var="subscription_id=$(ARM_SUBSCRIPTION_ID)" \
-              -var="image_tag=$(IMAGE_TAG_PROD)"
-            workingDirectory: "terraform/prod"
-            displayName: "Terraform Apply"
-            env:
-              ARM_CLIENT_ID: $(ARM_CLIENT_ID)
-              ARM_CLIENT_SECRET: $(ARM_CLIENT_SECRET)
-              ARM_SUBSCRIPTION_ID: $(ARM_SUBSCRIPTION_ID)
-              ARM_TENANT_ID: $(ARM_TENANT_ID)
+                - task: AzureCLI@2
+                  displayName: "Terraform Init"
+                  inputs:
+                    azureSubscription: "rangers-arm-service-connection"
+                    scriptType: "bash"
+                    scriptLocation: "inlineScript"
+                    inlineScript: |
+                      terraform init -reconfigure
+                    workingDirectory: terraform/prod
+                  env:
+                    ARM_CLIENT_ID: $(ARM_CLIENT_ID)
+                    ARM_CLIENT_SECRET: $(ARM_CLIENT_SECRET)
+                    ARM_SUBSCRIPTION_ID: $(ARM_SUBSCRIPTION_ID)
+                    ARM_TENANT_ID: $(ARM_TENANT_ID)
 
-          - task: AzureCLI@2
-            displayName: "Restart Prod Web App"
-            inputs:
-              azureSubscription: "rangers-arm-service-connection"
-              scriptType: "bash"
-              scriptLocation: "inlineScript"
-              inlineScript: |
-                az webapp restart --name rangers-webapp-prod --resource-group rg-rangers-prod
+                - script: |
+                    echo "Client ID: $(ARM_CLIENT_ID)"
+                    terraform apply -auto-approve \
+                    -var="client_id=$(ARM_CLIENT_ID)" \
+                    -var="client_secret=$(ARM_CLIENT_SECRET)" \
+                    -var="tenant_id=$(ARM_TENANT_ID)" \
+                    -var="subscription_id=$(ARM_SUBSCRIPTION_ID)" \
+                    -var="image_tag=$(IMAGE_TAG_PROD)"
+                  workingDirectory: "terraform/prod"
+                  displayName: "Terraform Apply"
+                  env:
+                    ARM_CLIENT_ID: $(ARM_CLIENT_ID)
+                    ARM_CLIENT_SECRET: $(ARM_CLIENT_SECRET)
+                    ARM_SUBSCRIPTION_ID: $(ARM_SUBSCRIPTION_ID)
+                    ARM_TENANT_ID: $(ARM_TENANT_ID)
+
+                - task: AzureCLI@2
+                  displayName: "Restart Prod Web App"
+                  inputs:
+                    azureSubscription: "rangers-arm-service-connection"
+                    scriptType: "bash"
+                    scriptLocation: "inlineScript"
+                    inlineScript: |
+                      az webapp restart --name rangers-webapp-prod --resource-group rg-rangers-prod
+
