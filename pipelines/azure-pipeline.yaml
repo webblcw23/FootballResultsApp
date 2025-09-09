@@ -173,7 +173,7 @@ stages:
               scriptType: "bash"
               scriptLocation: "inlineScript"
               inlineScript: |
-              # az webapp restart --name rangers-webapp-staging --resource-group rg-rangers-staging
+                az webapp restart --name rangers-webapp-staging --resource-group rg-rangers-staging
 
   - stage: DeployProd
     displayName: "✅ Deploy to Production Environment"
@@ -224,4 +224,4 @@ stages:
               scriptType: "bash"
               scriptLocation: "inlineScript"
               inlineScript: |
-              #  az webapp restart --name rangers-webapp-prod --resource-group rg-rangers-prod
+                az webapp restart --name rangers-webapp-prod --resource-group rg-rangers-prod
