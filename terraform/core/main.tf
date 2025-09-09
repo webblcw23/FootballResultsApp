@@ -25,6 +25,21 @@ resource "azurerm_container_registry" "rangers_acr" {
   }
 }
 
+resource "azurerm_storage_account" "tfstate" {
+  name                     = "rangersstate"
+  resource_group_name      = "rg-rangers-core"
+  location                 = "UK South"
+  account_tier             = "Standard"
+  account_replication_type = "LRS"
+}
+
+resource "azurerm_storage_container" "tfstate" {
+  name                  = "tfstate"
+  storage_account_id  = azurerm_storage_account.tfstate.id
+  container_access_type = "private"
+}
+
+
 
 
 
