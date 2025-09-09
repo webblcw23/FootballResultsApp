@@ -175,7 +175,7 @@ stages:
               inlineScript: |
                 az webapp restart --name rangers-webapp-staging --resource-group rg-rangers-staging
 
-  - stage: DeployProd
+  - stage: prod
     displayName: "✅ Deploy to Production Environment"
     dependsOn: DeployStaging
     condition: succeeded()
