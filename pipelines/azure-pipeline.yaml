@@ -175,13 +175,15 @@ stages:
               inlineScript: |
                 az webapp restart --name rangers-webapp-staging --resource-group rg-rangers-staging
 
-  - stage: Production
+  - stage: DeployProduction
     displayName: "✅ Deploy to Production Environment"
     dependsOn: DeployStaging
     condition: succeeded()
     jobs:
-      - job: TerraformProd
-        steps:
+    - deployment: TerraformProdGate
+      environment: Production
+    - job: TerraformProd
+      steps:
           - task: TerraformInstaller@1
             inputs:
               terraformVersion: "1.7.5"
