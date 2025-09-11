@@ -49,21 +49,8 @@ RangersApp is a cloud-native, CI/CD-driven web app that turns match data into a 
 5. App deployed to Azure Web App for Dev -> Staging (Gated) -> Produciton (Gated)
 6. Web App restarted to serve new data
 
-  ┌────────────┐
-  │  Scraper   │
-  └────┬───────┘
-       ↓
-  ┌────────────┐
-  │  Docker    │
-  └────┬───────┘
-       ↓
-  ┌────────────┐
-  │   ACR      │
-  └────┬───────┘
-       ↓
-┌──────┴───────────────┐
-│ Dev / Staging / Prod │
-└──────────────────────┘
+| Scraper |  -> | Docker |  -> | ACR | -> | Dev | -> | Staging | -> | Prod |
+
 
 ## Security Practices  
 - No secrets in code — credentials handled via Azure DevOps service connections through variables and secret toggle On
