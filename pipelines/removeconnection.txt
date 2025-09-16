@@ -1,1 +1,1 @@
-az devops service-endpoint delete --organization "https://My-Org" --project "My-Project" --id "GUID"
+az devops service-endpoint delete --organization "https://dev.azure.com/webblcw23" --project "FootballScores" --id "GUID"

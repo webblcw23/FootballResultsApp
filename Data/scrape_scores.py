@@ -56,4 +56,4 @@ else:
 # pip install pandas
 
 # Run your script
- #python Data/scrape_scores.py
+# python Data/scrape_scores.py
