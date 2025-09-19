@@ -1,12 +1,12 @@
 trigger: none
 
-schedules:
-  - cron: "0 9 * * 1"  # Every Monday at 9am
-    displayName: "Weekly scrape and deploy"
-    branches:
-      include:
-        - main
-    always: true
+#schedules:
+#    displayName: "Weekly scrape and deploy"
+#  - cron: "0 9 * * 1"  # Every Monday at 9am
+#    branches:
+#        - main
+#      include:
+#    always: true
     
 pool:
     vmImage: "ubuntu-latest"
