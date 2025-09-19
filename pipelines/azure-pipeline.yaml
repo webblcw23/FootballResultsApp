@@ -187,6 +187,7 @@ stages:
           runOnce:
             deploy:
               steps:
+                - checkout: self
                 - task: TerraformInstaller@1
                   inputs:
                     terraformVersion: "1.7.5"
