@@ -50,6 +50,13 @@ resource "azurerm_role_assignment" "acr_pull_dev" {
   scope                = "/subscriptions/91c0fe80-4528-4bf2-9796-5d0f2a250518/resourceGroups/rg-rangers-core/providers/Microsoft.ContainerRegistry/registries/rangersdockeracr"
 }
 
+# To allow for the web app restart
+resource "azurerm_role_assignment" "dev_webapp_rbac" {
+  principal_id         = "d0d5257b-bb1a-4272-b552-98a508458f5f" # Federated identity object ID
+  role_definition_name = "Contributor"
+  scope                = "/subscriptions/91c0fe80-4528-4bf2-9796-5d0f2a250518/resourceGroups/rg-rangers-dev"
+}
+
 
 
 

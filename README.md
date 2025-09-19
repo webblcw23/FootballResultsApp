@@ -94,7 +94,7 @@ Local testing completed successfully through dotnet run before testing with Dock
 
 
 ## Planned Enhancements  
-- 🔐 Key Vault Integration  - To Store secret (Pipelien Variable used for client secret is fine for now but ideal for best practice)
+- 🔐 Key Vault Integration  - To Store secret (Pipeline Variable used for client secret is fine for now but ideal for best practice)
 - 📈 Monitoring & Alerts  - Web App default alert is on but this can be improved.
 - 🧪 Unit Testing  - Add unit test scripts to ensure working application before deployment.
 

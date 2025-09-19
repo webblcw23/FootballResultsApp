@@ -1,7 +1,17 @@
 # One command to build and push for multiple environments/architectures. Do this once the acr is created through core terraform
+
+az acr login --name rangersdockeracr
+
+
 docker buildx build \
   --platform linux/amd64 \
   -t rangersdockeracr.azurecr.io/rangersapp:dev-001 \
   -t rangersdockeracr.azurecr.io/rangersapp:staging-001 \
   -t rangersdockeracr.azurecr.io/rangersapp:prod-001 \
   --push .
+
+
+# ADO pipeline reminder #
+# Remember to reinstate both the ACR Service Connection and also the ARM service conneciton in ADO due to the Core RG rebuild
+
+
