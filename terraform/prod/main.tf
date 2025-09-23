@@ -24,6 +24,7 @@ resource "azurerm_linux_web_app" "rangers_webapp_prod" {
   location            = azurerm_resource_group.rangers_rg_prod.location
   resource_group_name = azurerm_resource_group.rangers_rg_prod.name
   service_plan_id     = azurerm_service_plan.rangers_plan_prod.id
+  https_only = true  # 🔐 Enforces HTTPS for secure web app 
 
   site_config {
     application_stack {
