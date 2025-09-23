@@ -46,7 +46,7 @@ RangersApp is a cloud-native, CI/CD-driven web app that turns match data into a 
 2. Python script scrapes latest results  
 3. Docker image built with freshly updated JSON  
 4. Image pushed to Azure Container Registry  (ACR)
-5. App deployed to Azure Web App for Dev -> Staging (Gated) -> Produciton (Gated)
+5. App deployed to Azure Web App for Dev -> Staging (Gated) -> Production (Gated)
 6. Web App restarted to serve new data
 
 | Scraper |  -> | Docker |  -> | ACR | -> | Dev | -> | Staging | -> | Prod |
@@ -56,7 +56,7 @@ RangersApp is a cloud-native, CI/CD-driven web app that turns match data into a 
 - No secrets in code — credentials handled via Azure DevOps service connections through variables and secret toggle On
 - RBAC enforced for service principals  
 - Terraform state stored securely in Azure Blob Storage  
-- Key Vault mock Secret can been added for 'football-data-api-key' to demonstate Key Vault integreation into YAML pipe and Terraform 
+- Key Vault mock Secret can be added for 'football-data-api-key' to demonstrate Key Vault integreation into YAML pipe and Terraform 
   
 
 ## Monitoring & Observability  
