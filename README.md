@@ -65,34 +65,6 @@ RangersApp is a cloud-native, CI/CD-driven web app that turns match data into a 
 - Alerting and uptime tracking on the roadmap  
 
 
-# Run scraper cmd for local run 
-python3 Data/scrape_scores.py
-
-# Build and run locally
-docker build -t rangersapp:local .
-docker run -p 5050:80 rangersapp:local
-
-
------ Kubernetes extra ------
-# Adding a Local Test for Kubernetes via MiniKube
-- Ensure Minikube is running 
-minikube start
-- Build image via docker
-docker build -t rangersapp:local .  
-- Push Docker Image to Minikube
-minikube image load rangersapp:local
-- Then create the deployment and service using:
-kubectl apply -f k8s/deployment.yaml
-kubectl apply -f k8s/service.yaml
-- Manually forwarding the port using:
-kubectl port-forward svc/rangersapp-service 8080:80
-- Open URL
-http://localhost:8080/
-
-# Note
-Local testing completed successfully through dotnet run before testing with Docker. Once successful, pushed to Azure via automated Pipeline
-
-
 ## Planned Enhancements  
 - 🔐 Key Vault Integration  - To Store secret (Pipeline Variable used for client secret is fine for now but ideal for best practice)
 - 📈 Monitoring & Alerts  - Web App default alert is on but this can be improved.
