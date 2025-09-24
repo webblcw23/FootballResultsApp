@@ -5,6 +5,7 @@ An Azure cloud-native, CI/CD-powered web app that scrapes and serves Rangers FC 
 ## Overview  
 RangersApp is a cloud-native, CI/CD-driven web app that turns match data into a production-grade experience — built to showcase secure DevOps, modular infrastructure, and platform ownership
 
+<img width="820" height="526" alt="RangerrApp-Flow-drawio" src="https://github.com/user-attachments/assets/1a9d649c-5759-4839-baa0-a9f4b3c81616" />
 
 ## Architecture and Folder Setup 
 
