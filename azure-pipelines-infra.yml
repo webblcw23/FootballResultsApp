@@ -39,10 +39,10 @@ stages:
 
           - script: |
               terraform plan \
-              -var="client_id=$(ARM_CLIENT_ID)" \
-              -var="client_secret=$(ARM_CLIENT_SECRET)" \
-              -var="tenant_id=$(ARM_TENANT_ID)" \
-              -var="subscription_id=$(ARM_SUBSCRIPTION_ID)" \
+              -var="client_id="$ARM_CLIENT_ID" \
+              -var="client_secret="$ARM_CLIENT_SECRET" \
+              -var="tenant_id=$ARM_TENANT_ID" \
+              -var="subscription_id=$ARM_SUBSCRIPTION_ID" \
               -var="image_tag=$(IMAGE_TAG_DEV)"
             workingDirectory: terraform/dev
             displayName: "Terraform Plan"
@@ -54,10 +54,10 @@ stages:
 
           - script: |
               terraform apply -auto-approve \
-              -var="client_id=$(ARM_CLIENT_ID)" \
-              -var="client_secret=$(ARM_CLIENT_SECRET)" \
-              -var="tenant_id=$(ARM_TENANT_ID)" \
-              -var="subscription_id=$(ARM_SUBSCRIPTION_ID)" \
+              -var="client_id=$ARM_CLIENT_ID" \
+              -var="client_secret=$ARM_CLIENT_SECRET" \
+              -var="tenant_id=$ARM_TENANT_ID" \
+              -var="subscription_id=$ARM_SUBSCRIPTION_ID" \
               -var="image_tag=$(IMAGE_TAG_DEV)"
             workingDirectory: terraform/dev
             displayName: "Terraform Apply"
@@ -95,10 +95,10 @@ stages:
 
           - script: |
               terraform plan \
-              -var="client_id=$(ARM_CLIENT_ID)" \
-              -var="client_secret=$(ARM_CLIENT_SECRET)" \
-              -var="tenant_id=$(ARM_TENANT_ID)" \
-              -var="subscription_id=$(ARM_SUBSCRIPTION_ID)" \
+              -var="client_id=$ARM_CLIENT_ID" \
+              -var="client_secret=$ARM_CLIENT_SECRET" \
+              -var="tenant_id=$ARM_TENANT_ID" \
+              -var="subscription_id=$ARM_SUBSCRIPTION_ID" \
               -var="image_tag=$(IMAGE_TAG_STAGING)"
             workingDirectory: terraform/staging
             displayName: "Terraform Plan"
@@ -110,10 +110,10 @@ stages:
 
           - script: |
               terraform apply -auto-approve \
-              -var="client_id=$(ARM_CLIENT_ID)" \
-              -var="client_secret=$(ARM_CLIENT_SECRET)" \
-              -var="tenant_id=$(ARM_TENANT_ID)" \
-              -var="subscription_id=$(ARM_SUBSCRIPTION_ID)" \
+              -var="client_id=$ARM_CLIENT_ID" \
+              -var="client_secret=$ARM_CLIENT_SECRET" \
+              -var="tenant_id=$ARM_TENANT_ID" \
+              -var="subscription_id=$ARM_SUBSCRIPTION_ID" \
               -var="image_tag=$(IMAGE_TAG_STAGING)"
             workingDirectory: terraform/staging
             displayName: "Terraform Apply"
@@ -156,10 +156,10 @@ stages:
 
                 - script: |
                     terraform plan \
-                    -var="client_id=$(ARM_CLIENT_ID)" \
-                    -var="client_secret=$(ARM_CLIENT_SECRET)" \
-                    -var="tenant_id=$(ARM_TENANT_ID)" \
-                    -var="subscription_id=$(ARM_SUBSCRIPTION_ID)" \
+                    -var="client_id=$ARM_CLIENT_ID" \
+                    -var="client_secret=$ARM_CLIENT_SECRET" \
+                    -var="tenant_id=$ARM_TENANT_ID" \
+                    -var="subscription_id=$ARM_SUBSCRIPTION_ID" \
                     -var="image_tag=$(IMAGE_TAG_PROD)"
                   workingDirectory: terraform/prod
                   displayName: "Terraform Plan"
@@ -171,10 +171,10 @@ stages:
 
                 - script: |
                     terraform apply -auto-approve \
-                    -var="client_id=$(ARM_CLIENT_ID)" \
-                    -var="client_secret=$(ARM_CLIENT_SECRET)" \
-                    -var="tenant_id=$(ARM_TENANT_ID)" \
-                    -var="subscription_id=$(ARM_SUBSCRIPTION_ID)" \
+                    -var="client_id=$ARM_CLIENT_ID" \
+                    -var="client_secret=$ARM_CLIENT_SECRET" \
+                    -var="tenant_id=$ARM_TENANT_ID" \
+                    -var="subscription_id=$ARM_SUBSCRIPTION_ID" \
                     -var="image_tag=$(IMAGE_TAG_PROD)"
                   workingDirectory: terraform/prod
                   displayName: "Terraform Apply"
