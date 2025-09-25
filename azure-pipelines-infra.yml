@@ -1,0 +1,182 @@
+trigger: none
+
+pool:
+  vmImage: "ubuntu-latest"
+
+variables:
+  IMAGE_TAG_DEV: "dev-001"
+  IMAGE_TAG_STAGING: "staging-001"
+  IMAGE_TAG_PROD: "prod-001"
+
+stages:
+  - stage: DeployDev
+    displayName: "🚀 Deploy Dev Infrastructure"
+    jobs:
+      - job: TerraformDev
+        steps:
+          - task: TerraformInstaller@1
+            inputs:
+              terraformVersion: "1.7.5"
+
+          - task: AzureCLI@2
+            displayName: "Terraform Init"
+            inputs:
+              azureSubscription: "rangers-arm-service-connection"
+              scriptType: "bash"
+              scriptLocation: "inlineScript"
+              inlineScript: |
+                az account set --subscription $(ARM_SUBSCRIPTION_ID)
+                terraform init -reconfigure
+              workingDirectory: terraform/dev
+            env:
+              ARM_CLIENT_ID: $(ARM_CLIENT_ID)
+              ARM_CLIENT_SECRET: $(ARM_CLIENT_SECRET)
+              ARM_SUBSCRIPTION_ID: $(ARM_SUBSCRIPTION_ID)
+              ARM_TENANT_ID: $(ARM_TENANT_ID)
+
+          - script: |
+              terraform plan \
+              -var="client_id=$(ARM_CLIENT_ID)" \
+              -var="client_secret=$(ARM_CLIENT_SECRET)" \
+              -var="tenant_id=$(ARM_TENANT_ID)" \
+              -var="subscription_id=$(ARM_SUBSCRIPTION_ID)" \
+              -var="image_tag=$(IMAGE_TAG_DEV)"
+            workingDirectory: terraform/dev
+            displayName: "Terraform Plan"
+            env:
+              ARM_CLIENT_ID: $(ARM_CLIENT_ID)
+              ARM_CLIENT_SECRET: $(ARM_CLIENT_SECRET)
+              ARM_SUBSCRIPTION_ID: $(ARM_SUBSCRIPTION_ID)
+              ARM_TENANT_ID: $(ARM_TENANT_ID)
+
+          - script: |
+              terraform apply -auto-approve \
+              -var="client_id=$(ARM_CLIENT_ID)" \
+              -var="client_secret=$(ARM_CLIENT_SECRET)" \
+              -var="tenant_id=$(ARM_TENANT_ID)" \
+              -var="subscription_id=$(ARM_SUBSCRIPTION_ID)" \
+              -var="image_tag=$(IMAGE_TAG_DEV)"
+            workingDirectory: terraform/dev
+            displayName: "Terraform Apply"
+            env:
+              ARM_CLIENT_ID: $(ARM_CLIENT_ID)
+              ARM_CLIENT_SECRET: $(ARM_CLIENT_SECRET)
+              ARM_SUBSCRIPTION_ID: $(ARM_SUBSCRIPTION_ID)
+              ARM_TENANT_ID: $(ARM_TENANT_ID)
+
+  - stage: DeployStaging
+    displayName: "🚦 Deploy Staging Infrastructure"
+    dependsOn: DeployDev
+    condition: succeeded()
+    jobs:
+      - job: TerraformStaging
+        steps:
+          - task: TerraformInstaller@1
+            inputs:
+              terraformVersion: "1.7.5"
+
+          - task: AzureCLI@2
+            displayName: "Terraform Init"
+            inputs:
+              azureSubscription: "rangers-arm-service-connection"
+              scriptType: "bash"
+              scriptLocation: "inlineScript"
+              inlineScript: |
+                terraform init -reconfigure
+              workingDirectory: terraform/staging
+            env:
+              ARM_CLIENT_ID: $(ARM_CLIENT_ID)
+              ARM_CLIENT_SECRET: $(ARM_CLIENT_SECRET)
+              ARM_SUBSCRIPTION_ID: $(ARM_SUBSCRIPTION_ID)
+              ARM_TENANT_ID: $(ARM_TENANT_ID)
+
+          - script: |
+              terraform plan \
+              -var="client_id=$(ARM_CLIENT_ID)" \
+              -var="client_secret=$(ARM_CLIENT_SECRET)" \
+              -var="tenant_id=$(ARM_TENANT_ID)" \
+              -var="subscription_id=$(ARM_SUBSCRIPTION_ID)" \
+              -var="image_tag=$(IMAGE_TAG_STAGING)"
+            workingDirectory: terraform/staging
+            displayName: "Terraform Plan"
+            env:
+              ARM_CLIENT_ID: $(ARM_CLIENT_ID)
+              ARM_CLIENT_SECRET: $(ARM_CLIENT_SECRET)
+              ARM_SUBSCRIPTION_ID: $(ARM_SUBSCRIPTION_ID)
+              ARM_TENANT_ID: $(ARM_TENANT_ID)
+
+          - script: |
+              terraform apply -auto-approve \
+              -var="client_id=$(ARM_CLIENT_ID)" \
+              -var="client_secret=$(ARM_CLIENT_SECRET)" \
+              -var="tenant_id=$(ARM_TENANT_ID)" \
+              -var="subscription_id=$(ARM_SUBSCRIPTION_ID)" \
+              -var="image_tag=$(IMAGE_TAG_STAGING)"
+            workingDirectory: terraform/staging
+            displayName: "Terraform Apply"
+            env:
+              ARM_CLIENT_ID: $(ARM_CLIENT_ID)
+              ARM_CLIENT_SECRET: $(ARM_CLIENT_SECRET)
+              ARM_SUBSCRIPTION_ID: $(ARM_SUBSCRIPTION_ID)
+              ARM_TENANT_ID: $(ARM_TENANT_ID)
+
+  - stage: DeployProduction
+    displayName: "✅ Deploy Production Infrastructure"
+    dependsOn: DeployStaging
+    condition: succeeded()
+    jobs:
+      - deployment: TerraformProdGate
+        environment: Production
+        strategy:
+          runOnce:
+            deploy:
+              steps:
+                - checkout: self
+                - task: TerraformInstaller@1
+                  inputs:
+                    terraformVersion: "1.7.5"
+
+                - task: AzureCLI@2
+                  displayName: "Terraform Init"
+                  inputs:
+                    azureSubscription: "rangers-arm-service-connection"
+                    scriptType: "bash"
+                    scriptLocation: "inlineScript"
+                    inlineScript: |
+                      terraform init -reconfigure
+                    workingDirectory: terraform/prod
+                  env:
+                    ARM_CLIENT_ID: $(ARM_CLIENT_ID)
+                    ARM_CLIENT_SECRET: $(ARM_CLIENT_SECRET)
+                    ARM_SUBSCRIPTION_ID: $(ARM_SUBSCRIPTION_ID)
+                    ARM_TENANT_ID: $(ARM_TENANT_ID)
+
+                - script: |
+                    terraform plan \
+                    -var="client_id=$(ARM_CLIENT_ID)" \
+                    -var="client_secret=$(ARM_CLIENT_SECRET)" \
+                    -var="tenant_id=$(ARM_TENANT_ID)" \
+                    -var="subscription_id=$(ARM_SUBSCRIPTION_ID)" \
+                    -var="image_tag=$(IMAGE_TAG_PROD)"
+                  workingDirectory: terraform/prod
+                  displayName: "Terraform Plan"
+                  env:
+                    ARM_CLIENT_ID: $(ARM_CLIENT_ID)
+                    ARM_CLIENT_SECRET: $(ARM_CLIENT_SECRET)
+                    ARM_SUBSCRIPTION_ID: $(ARM_SUBSCRIPTION_ID)
+                    ARM_TENANT_ID: $(ARM_TENANT_ID)
+
+                - script: |
+                    terraform apply -auto-approve \
+                    -var="client_id=$(ARM_CLIENT_ID)" \
+                    -var="client_secret=$(ARM_CLIENT_SECRET)" \
+                    -var="tenant_id=$(ARM_TENANT_ID)" \
+                    -var="subscription_id=$(ARM_SUBSCRIPTION_ID)" \
+                    -var="image_tag=$(IMAGE_TAG_PROD)"
+                  workingDirectory: terraform/prod
+                  displayName: "Terraform Apply"
+                  env:
+                    ARM_CLIENT_ID: $(ARM_CLIENT_ID)
+                    ARM_CLIENT_SECRET: $(ARM_CLIENT_SECRET)
+                    ARM_SUBSCRIPTION_ID: $(ARM_SUBSCRIPTION_ID)
+                    ARM_TENANT_ID: $(ARM_TENANT_ID)
