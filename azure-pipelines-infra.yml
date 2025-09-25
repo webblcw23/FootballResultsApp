@@ -4,9 +4,12 @@ pool:
   vmImage: "ubuntu-latest"
 
 variables:
+  group: AzureConnections
   IMAGE_TAG_DEV: "dev-001"
   IMAGE_TAG_STAGING: "staging-001"
   IMAGE_TAG_PROD: "prod-001"
+
+
 
 stages:
   - stage: DeployDev
