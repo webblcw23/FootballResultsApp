@@ -31,12 +31,16 @@ resource "azurerm_storage_account" "tfstate" {
   location                 = "UK South"
   account_tier             = "Standard"
   account_replication_type = "LRS"
+
+  depends_on = [ azurerm_resource_group.rangers_rg_core ]
 }
 
 resource "azurerm_storage_container" "tfstate" {
   name                  = "tfstate"
   storage_account_id  = azurerm_storage_account.tfstate.id
   container_access_type = "private"
+
+  depends_on = [ azurerm_storage_account.tfstate ]
 }
 
 
