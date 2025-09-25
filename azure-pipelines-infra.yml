@@ -28,7 +28,7 @@ stages:
               scriptType: "bash"
               scriptLocation: "inlineScript"
               inlineScript: |
-                az account set --subscription $(ARM_SUBSCRIPTION_ID)
+                az account set --subscription "$ARM_SUBSCRIPTION_ID"
                 terraform init -reconfigure
               workingDirectory: terraform/dev
             env:
