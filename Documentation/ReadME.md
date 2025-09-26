@@ -5,7 +5,7 @@ An Azure cloud-native, CI/CD-powered web app that scrapes and serves Rangers FC 
 ## Overview  
 RangersApp is a cloud-native, CI/CD-driven web app that turns match data into a production-grade experience — built to showcase secure DevOps, modular infrastructure, and platform ownership
 
-<img width="820" height="526" alt="RangerrApp-Flow-drawio" src="https://github.com/user-attachments/assets/1a9d649c-5759-4839-baa0-a9f4b3c81616" />
+<img width="820" height="526" alt="RangerrApp-Flow-drawio" src="https://github.com/user-attachments/assets/8ebd2cd9-4d80-4f19-ac85-057071d98878" />
 
 ## Architecture and Folder Setup 
 
@@ -51,6 +51,16 @@ RangersApp is a cloud-native, CI/CD-driven web app that turns match data into a 
 6. Web App restarted to serve new data
 
 | Scraper |  -> | Docker |  -> | ACR | -> | Dev | -> | Staging | -> | Prod |
+
+Extra - 
+As well as the master 'Full' pipeline wich creates the infrastructure and updates the RangersApp results weekly...
+I have created 2 new pipelines and split the these into 2.
+
+The First Pipe is for initial infrastructure - Creation of the Azure resources including RGs, Backend Storage (tfstate), ARC, Web App, IAM role permissions.
+The Second Pipe controls and automates the Web App's python scrape to update the results and restart the web app.
+
+This cleaner set up allows a quicker,cleaner, more function based approach
+
 
 
 ## Security Practices  
