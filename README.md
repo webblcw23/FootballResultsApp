@@ -52,6 +52,16 @@ RangersApp is a cloud-native, CI/CD-driven web app that turns match data into a 
 
 | Scraper |  -> | Docker |  -> | ACR | -> | Dev | -> | Staging | -> | Prod |
 
+Extra - 
+As well as the master 'Full' pipeline wich creates the infrastructure and updates the RangersApp results weekly...
+I have created 2 new pipelines and split the these into 2.
+
+The First Pipe is for initial infrastructure - Creation of the Azure resources including RGs, Backend Storage (tfstate), ARC, Web App, IAM role permissions.
+The Second Pipe controls and automates the Web App's python scrape to update the results and restart the web app.
+
+This cleaner set up allows a quicker,cleaner, more function based approach
+
+
 
 ## Security Practices  
 - No secrets in code — credentials handled via Azure DevOps service connections through variables and secret toggle On
