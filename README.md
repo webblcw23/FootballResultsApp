@@ -73,7 +73,13 @@ This cleaner set up allows a quicker,cleaner, more function based approach
 ## Monitoring & Observability  
 - Logging available via Azure Web App diagnostics  
 - App Insights and health checks planned  
-- Alerting and uptime tracking on the roadmap  
+- Alerting and uptime tracking on the roadmap
+ 
+
+<img width="1762" height="916" alt="Screenshot 2025-09-04 at 05 45 54" src="https://github.com/user-attachments/assets/9fd0cc49-0aa9-49ff-9fed-7620333e241d" />
+<img width="1408" height="527" alt="Screenshot 2025-09-02 at 20 38 27" src="https://github.com/user-attachments/assets/26fc2865-abbf-4f95-a055-ca142c59207d" />
+
+
 
 
 ## Planned Enhancements  
