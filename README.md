@@ -1,4 +1,4 @@
-# RangersApp ⚽  
+# FootballResultsApp ⚽  
 An Azure cloud-native, CI/CD-powered web app that scrapes and serves Rangers FC match results — deployed end-to-end on Azure with Development, Staging and Production Environments.
 - View the /Documentation folder for screenshots.
   
