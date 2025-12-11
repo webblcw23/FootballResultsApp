@@ -22,7 +22,7 @@ stages:
         projectKey: 'webblcw23_FootballScores'
         projectName: 'FootballScores'
 
-    - script: dotnet build Rangers.Web.csproj. # Solution or project file to build (.sln or .csproj)
+    - script: dotnet build Rangers.Web.csproj # Solution or project file to build (.sln or .csproj)
       displayName: 'Build .NET project'
 
     - task: SonarCloudAnalyze@4
