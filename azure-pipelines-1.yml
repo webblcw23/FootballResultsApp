@@ -22,8 +22,13 @@ stages:
         projectKey: 'webblcw23_FootballScores'
         projectName: 'FootballScores'
         extraProperties: |
-          sonar.inclusions=FootballResultsApp/**/*.cs
-          sonar.exclusions=**/bin/**,**/obj/**,**/Tests/**,**/Migrations/**,**/wwwroot/**,**/node_modules/**,**/dist/**,**/*.Designer.cs,**/*.generated.cs
+              # Only analyze your C# source files
+              sonar.inclusions=**/*.cs
+
+              # Exclude build artifacts, generated code, tests, and libraries
+              sonar.exclusions=**/bin/**,**/obj/**,**/Migrations/**,**/wwwroot/**,**/lib/**,**/node_modules/**,**/dist/**,**/coverage/**,**/*.Designer.cs,**/*.generated.cs,**/*.js,**/*.css,**/*.html,**/*.xml
+              sonar.test.exclusions=**/*Tests.csproj,**/Tests/**
+
 
     - script: dotnet build Rangers.Web.csproj # Solution or project file to build (.sln or .csproj)
       displayName: 'Build .NET project'
