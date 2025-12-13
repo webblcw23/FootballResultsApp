@@ -1,8 +1,8 @@
 {
   "version": 2,
-  "dgSpecHash": "8qrPQmbqs4k=",
+  "dgSpecHash": "hdJjdSozAd4=",
   "success": true,
-  "projectFilePath": "/Users/lewiswebb/Documents/VSCode_Azure/RangersApp/Rangers.Web.csproj",
+  "projectFilePath": "/Users/lewiswebb/Documents/VSCode_Azure/FootballResultsApp/Rangers.Web.csproj",
   "expectedPackageFiles": [
     "/Users/lewiswebb/.nuget/packages/htmlagilitypack/1.12.2/htmlagilitypack.1.12.2.nupkg.sha512",
     "/Users/lewiswebb/.nuget/packages/ical.net/5.1.0/ical.net.5.1.0.nupkg.sha512",

@@ -140,11 +140,11 @@
   "project": {
     "version": "1.0.0",
     "restore": {
-      "projectUniqueName": "/Users/lewiswebb/Documents/VSCode_Azure/RangersApp/Rangers.Web.csproj",
+      "projectUniqueName": "/Users/lewiswebb/Documents/VSCode_Azure/FootballResultsApp/Rangers.Web.csproj",
       "projectName": "Rangers.Web",
-      "projectPath": "/Users/lewiswebb/Documents/VSCode_Azure/RangersApp/Rangers.Web.csproj",
+      "projectPath": "/Users/lewiswebb/Documents/VSCode_Azure/FootballResultsApp/Rangers.Web.csproj",
       "packagesPath": "/Users/lewiswebb/.nuget/packages/",
-      "outputPath": "/Users/lewiswebb/Documents/VSCode_Azure/RangersApp/obj/",
+      "outputPath": "/Users/lewiswebb/Documents/VSCode_Azure/FootballResultsApp/obj/",
       "projectStyle": "PackageReference",
       "configFilePaths": [
         "/Users/lewiswebb/.nuget/NuGet/NuGet.Config"
