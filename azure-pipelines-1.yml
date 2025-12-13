@@ -22,16 +22,28 @@ stages:
         projectKey: 'webblcw23_FootballScores'
         projectName: 'FootballScores'
         extraProperties: |
-              # Only analyze your C# source files
-              sonar.inclusions=**/*.cs
+          # Only analyze your C# source files
+          sonar.inclusions=**/*.cs
 
-              # Exclude build artifacts, generated code, tests, and libraries
-              sonar.exclusions=**/bin/**,**/obj/**,**/Migrations/**,**/wwwroot/**,**/lib/**,**/node_modules/**,**/dist/**,**/coverage/**,**/*.Designer.cs,**/*.generated.cs,**/*.js,**/*.css,**/*.html,**/*.xml
-              sonar.test.exclusions=**/*Tests.csproj,**/Tests/**
+          # Exclude build artifacts, generated code, tests, and libraries
+          sonar.exclusions=**/bin/**,**/obj/**,**/Migrations/**,**/wwwroot/**,**/lib/**,**/node_modules/**,**/dist/**,**/coverage/**,**/*.Designer.cs,**/*.generated.cs,**/*.js,**/*.css,**/*.html,**/*.xml
+          sonar.test.exclusions=**/*Tests.csproj,**/Tests/**
 
+          # Point SonarCloud to coverage reports
+          sonar.cs.opencover.reportsPaths=**/TestResults/**/coverage.cobertura.xml
 
-    - script: dotnet build Rangers.Web.csproj # Solution or project file to build (.sln or .csproj)
+    - script: dotnet build Rangers.Web.csproj
       displayName: 'Build .NET project'
+
+    # Run unit tests and collect coverage
+    - script: dotnet test Rangers.Web.csproj --collect:"XPlat Code Coverage"
+      displayName: 'Run unit tests with coverage'
+
+    # Publish test results to Azure DevOps (optional, but nice for visibility)
+    - task: PublishTestResults@2
+      inputs:
+        testResultsFiles: '**/TestResults/*.trx'
+        testRunTitle: 'Unit Tests'
 
     - task: SonarCloudAnalyze@4
       displayName: 'Run SonarCloud analysis'
