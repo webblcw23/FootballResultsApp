@@ -4,8 +4,8 @@ pr: none
 
 resources:
   pipelines:
-  - pipeline: sameple-pipe
-    source: Sample-Pipe
+  - pipeline: sample-pipe
+    source: sample-pipe
     trigger:
       branches: 
         include:
