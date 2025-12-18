@@ -1,0 +1,10 @@
+# Empty pipeline to test trigger SonarCloudPipe
+
+trigger: none   # prevents automatic runs on push
+
+pool:
+  vmImage: ubuntu-latest
+
+steps:
+- script: echo "Hello, world! Empty pipeline test"
+  displayName: 'Run a simple script'
