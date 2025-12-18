@@ -1,5 +1,15 @@
 # Pipeline to test our SonarCloud
 trigger: none
+pr: none
+
+resources:
+  pipelines:
+  - pipeline: sameple-pipe
+    source: Sample-Pipe
+    trigger:
+      branches: 
+        include:
+          - '*'
 
 pool:
   vmImage: "ubuntu-latest"
